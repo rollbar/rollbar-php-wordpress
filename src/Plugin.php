@@ -73,6 +73,14 @@ class Plugin {
             }
             
         }
+
+        if (!isset($options['proxy']) || empty($options['proxy'])) {
+
+            if (defined('WP_PROXY_HOST') && defined('WP_PROXY_PORT')) {
+              $options['proxy'] = WP_PROXY_HOST.":". WP_PROXY_PORT;
+            }
+
+        }
         
         if (!isset($options['server_side_access_token']) || empty($options['server_side_access_token'])) {
             
