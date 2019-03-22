@@ -3,7 +3,7 @@ Contributors: arturmoczulski
 Tags: rollbar, full stack, error, tracking, error tracking, error reporting, reporting, debug
 Requires at least: 3.5.1
 Tested up to: 5.1.1
-Stable tag: 2.5.1
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,11 @@ Yes. It's actually the recommended method of installation.
 
 == Changelog ==
 
+= Version 2.6.0 (March 21st 2019) =
+* Update Composer dependencies #80 (https://github.com/rollbar/rollbar-php-wordpress/pull/80)
+* #77: the plugin has been tested with the latest version of wordpress #78  (https://github.com/rollbar/rollbar-php-wordpress/pull/78)
+* Add WP_PROXY support #76 (https://github.com/rollbar/rollbar-php-wordpress/pull/76)
+
 = Version 2.5.1 (February 20th 2019) =
 * Fixed a call to Rollbar\Wordpress\Defaults for enableMustUsePlugin (https://github.com/rollbar/rollbar-php-wordpress/pull/75)
 
@@ -205,6 +210,11 @@ Yes. It's actually the recommended method of installation.
 * Initial release!
 
 == Upgrade Notice ==
+
+= Version 2.6.0 (March 21st 2019) =
+* Update Composer dependencies #80 (https://github.com/rollbar/rollbar-php-wordpress/pull/80)
+* #77: the plugin has been tested with the latest version of wordpress #78  (https://github.com/rollbar/rollbar-php-wordpress/pull/78)
+* Add WP_PROXY support #76 (https://github.com/rollbar/rollbar-php-wordpress/pull/76)
 
 = Version 2.5.1 (February 20th 2019) =
 * Fixed a call to Rollbar\Wordpress\Defaults for enableMustUsePlugin (https://github.com/rollbar/rollbar-php-wordpress/pull/75)
