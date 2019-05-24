@@ -265,12 +265,12 @@ class Plugin {
     
     public function initPhpLogging()
     {
+        $this->fetchSettings();
+
         // Return if logging is not enabled
         if ( $this->settings['php_logging_enabled'] === 0 ) {
             return;
         }
-        
-        $this->fetchSettings();
         
         // installs global error and exception handlers
         try {
