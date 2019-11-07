@@ -318,8 +318,8 @@ class Plugin {
         $config['timeout'] = intval($this->settings['timeout']);
         
         foreach (UI::settingsOfType(UI::SETTING_INPUT_TYPE_PHP) as $setting) {
-            
-            if (isset($config[$setting])) {
+
+            if (isset($config[$setting]) && ! ($config[$setting] instanceof \Closure)) {
                 
                 $code = is_string($config[$setting]) ?: 'return ' . var_export($config[$setting], true) . ';';
                 
