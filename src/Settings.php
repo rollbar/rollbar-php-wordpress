@@ -99,7 +99,7 @@ class Settings
     
     public static function registerSession()
     {
-        if( !session_id() && !defined( 'DOING_CRON' )) {
+        if( ! session_id() && ! defined( 'DOING_CRON' ) ) {
             session_start();
         }
     }
