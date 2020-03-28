@@ -49,6 +49,7 @@ class Settings
                 'RollbarWordpress', 
                 array(
                     'plugin_url' => \plugin_dir_url(__FILE__) . "../",
+                    'rest_root'  => esc_url_raw( rest_url( 'rollbar/v1' ) ),
                 )
             );
             
