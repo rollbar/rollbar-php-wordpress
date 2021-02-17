@@ -164,7 +164,7 @@ class Plugin {
                 array(
                     'methods' => 'POST',
                     'callback' => '\Rollbar\Wordpress\Plugin::testPhpLogging',
-					'permission_callback' => '__return_true',
+                    'permission_callback' => '__return_true',
                     'args' => array(
                         'server_side_access_token' => array(
                             'required' => true
