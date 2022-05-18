@@ -89,19 +89,10 @@ class Settings
             );
             \wp_enqueue_style('RollbarWordpressSettings');
         });
-        
-        \add_action('init', array(get_called_class(), 'registerSession'));
 
         \add_action('admin_post_rollbar_wp_restore_defaults', array(get_called_class(), 'restoreDefaultsAction'));
         
         \add_action('pre_update_option_rollbar_wp', array(get_called_class(), 'preUpdate'));
-    }
-    
-    public static function registerSession()
-    {
-        if( ! session_id() && ! defined( 'DOING_CRON' ) ) {
-            session_start();
-        }
     }
 
     function addAdminMenu()
@@ -372,6 +363,13 @@ class Settings
     
     public static function flashMessage($type, $message)
     {
+        // This is only designed to run in the admin for the main HTML request.
+        // If there is no session at this point something has gone terribly
+        // wrong, and we should bail out.
+        if( ! is_admin() || ! session_id() || wp_doing_cron() ) {
+            return;
+        }
+
         $_SESSION['rollbar_wp_flash_message'] = array(
             "type" => $type,
             "message" => $message
@@ -397,14 +395,18 @@ class Settings
             try {
                 Plugin::instance()->enableMustUsePlugin();
             } catch (\Exception $exception) {
-                self::flashMessage('error', 'Failed enabling the Must-Use plugin.');
+                add_action('admin_notices', function () {
+                    echo '<div class="error notice"><p><strong>Error:</strong> failed to enable the Rollbar Must-Use plugin.</p></div>';
+                });
                 $settings['enable_must_use_plugin'] = false;
             }
         } else {
             try {
                 Plugin::instance()->disableMustUsePlugin();
             } catch (\Exception $exception) {
-                self::flashMessage('error', 'Failed disabling the Must-Use plugin.');
+                add_action('admin_notices', function () {
+                    echo '<div class="error notice"><p><strong>Error:</strong> failed to disable the Rollbar Must-Use plugin.</p></div>';
+                });
                 $settings['enable_must_use_plugin'] = true;
             }
         }
