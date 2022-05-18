@@ -59,28 +59,6 @@ class Settings
                 Plugin::VERSION
             );
             
-            \wp_register_script( 
-                'AceEditor', 
-                \plugin_dir_url(__FILE__)."../public/js/ace-builds/src-min-noconflict/ace.js",
-                array('jquery'),
-                Plugin::VERSION
-            );
-            
-            \wp_localize_script(
-                'AceEditor', 
-                'AceEditorLocalized', 
-                array(
-                    'plugin_url' => \plugin_dir_url(__FILE__) . "../",
-                )
-            );
-            
-            \wp_enqueue_script(
-                "AceEditor",
-                \plugin_dir_url(__FILE__)."../public/js/ace-builds/src-min-noconflict/ace.js", 
-                array("jquery"),
-                Plugin::VERSION
-            );  
-            
             \wp_register_style(
                 'RollbarWordpressSettings',
                 \plugin_dir_url(__FILE__)."../public/css/RollbarWordpressSettings.css",
