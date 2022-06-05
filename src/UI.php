@@ -217,11 +217,16 @@ class UI
         </p>
         <?php
     }
+
+    public static function getEnv()
+    {
+        return ( getenv('WP_ENV') ?: ( defined( 'WP_ENV' ) ? WP_ENV : null ) );
+    }
     
     public static function environmentSettingNote()
     {
         $output = 
-            '<p><code>WP_ENV</code> environment variable: <code> ' . getenv('WP_ENV') . ' </code></p>' .
+            '<p><code>WP_ENV</code> environment variable: <code> ' . self::getEnv() . ' </code></p>' .
             '<p><small><strong>Rollbar for Wordpress honors the WP_ENV environment variable.</strong> ' .
             'If the <code>environment</code> setting is not specified here, it will take ' .
             'precendence over the default value.</strong></small></p>';

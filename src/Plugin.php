@@ -52,6 +52,11 @@ class Plugin {
     private function initSettings() {
         Settings::init();
     }
+
+    private function getEnv()
+    {
+        return ( getenv('WP_ENV') ?: ( defined( 'WP_ENV' ) ? WP_ENV : null ) );
+    }
     
     /**
      * Fetch settings provided in Admin -> Tools -> Rollbar
@@ -68,7 +73,7 @@ class Plugin {
         
         if (!isset($options['environment']) || empty($options['environment'])) {
             
-            if ($wpEnv = getenv('WP_ENV')) {
+            if ($wpEnv = $this->getEnv()) {
                 $options['environment'] = $wpEnv;
             }
             
