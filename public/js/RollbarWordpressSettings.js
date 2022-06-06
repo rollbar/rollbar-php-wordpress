@@ -195,13 +195,13 @@
                 if (php_config.php_logging_enabled) {
                     logThroughPhp(php_config);
                 } else {
-                    failNotice("Skipped testing PHP logging since it is disabled.");
+                    successNotice("Skipped testing PHP logging since it is disabled.");
                 }
                 
                 if (js_logging_enabled) {
                     logThroughJs(client_side_access_token, environment, logging_level);
                 } else {
-                    failNotice("Skipped testing JS logging since it is disabled.");
+                    successNotice("Skipped testing JS logging since it is disabled.");
                 }
                 
             });
