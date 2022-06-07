@@ -19,7 +19,7 @@ class Defaults {
     
     public function environment()
     {
-        return ( getenv('WP_ENV') ?: ( defined( 'WP_ENV' ) ? WP_ENV : null ) );
+        return \Rollbar\Wordpress\Plugin::getEnvironment();
     }
     
     public function root()

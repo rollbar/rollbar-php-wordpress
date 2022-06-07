@@ -53,7 +53,7 @@ class Plugin {
         Settings::init();
     }
 
-    private function getEnvironment()
+    public static function getEnvironment()
     {
         return ( getenv('WP_ENV') ?: ( defined( 'WP_ENV' ) ? WP_ENV : null ) );
     }
