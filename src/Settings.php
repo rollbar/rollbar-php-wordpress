@@ -30,6 +30,7 @@ class Settings
     public static function init() {
         $instance = self::instance();
         \add_action('admin_menu', array(&$instance, 'addAdminMenu'));
+        \add_filter('plugin_action_links_'.basename(dirname(__DIR__)).'/rollbar-php-wordpress.php', array(&$instance, 'addAdminMenuLink'));
         \add_action('admin_init', array(&$instance, 'addSettings'));
         \add_action('admin_enqueue_scripts', function($hook) {
             
@@ -83,6 +84,15 @@ class Settings
             'rollbar_wp',
             array(&$this, 'optionsPage')
         );
+    }
+
+    function addAdminMenuLink($links)
+    {
+        $args = array('page' => 'rollbar_wp');
+
+        $links['settings'] = '<a href="'.admin_url( 'options-general.php?'.http_build_query( $args ) ).'">'.__('Settings', 'rollbar').'</a>';
+
+        return $links;
     }
 
     function addSettings()
