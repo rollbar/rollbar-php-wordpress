@@ -119,7 +119,7 @@ class Settings
 
     function addAdminMenuLink($links)
     {
-        $args['page'] = 'rollbar_wp';
+        $args = array('page' => 'rollbar_wp');
 
         $links['settings'] = '<a href="'.admin_url( 'options-general.php?'.http_build_query( $args ) ).'">'.__('Settings', 'rollbar').'</a>';
 
