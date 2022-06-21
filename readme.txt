@@ -3,7 +3,7 @@ Contributors: arturmoczulski
 Tags: rollbar, full stack, error, tracking, error tracking, error reporting, reporting, debug
 Requires at least: 3.5.1
 Tested up to: 5.8.4
-Stable tag: 2.6.3
+Stable tag: 2.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,12 @@ Yes. It's actually the recommended method of installation.
 1. Settings page
 
 == Changelog ==
+
+= Version 2.6.4 (June 13th 2022) =
+* Updated admin test results to show a skipped test as a success (https://github.com/rollbar/rollbar-php-wordpress/pull/110)
+* Fixed new session being created on every request (https://github.com/rollbar/rollbar-php-wordpress/pull/111)
+* Added search for WP_ENV as a constant or the environment (https://github.com/rollbar/rollbar-php-wordpress/pull/108)
+* Added a link to settings from the plugins page (https://github.com/rollbar/rollbar-php-wordpress/pull/109)
 
 = Version 2.6.3 (April 18th 2022) =
 * Update the tested WP versions
@@ -214,6 +220,9 @@ Yes. It's actually the recommended method of installation.
 * Initial release!
 
 == Upgrade Notice ==
+
+= Version 2.6.4 (June 13th 2022) =
+Updated admin test results to show a skipped test as a success. Fixed new session being created on every request. Added search for WP_ENV as a constant or the environment. Added a link to settings from the plugins page.
 
 = Version 2.6.3 (April 18th 2022) =
 * Update the tested WP versions
