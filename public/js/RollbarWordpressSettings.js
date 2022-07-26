@@ -97,7 +97,7 @@
                 },
                 logThroughPhp = function(config) {
                     jQuery.post(
-                        "/index.php?rest_route=/rollbar/v1/test-php-logging",
+                        RollbarWordpress.rest_root + "/test-php-logging",
                         config,
                         function(response) {
                             
