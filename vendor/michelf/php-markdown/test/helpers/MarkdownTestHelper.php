@@ -22,6 +22,7 @@ class MarkdownTestHelper
 
 		$dataValues = array();
 
+		/** @var SplFileInfo $inputFile */
 		foreach ($regexIterator as $inputFiles) {
 			foreach ($inputFiles as $inputMarkdownPath) {
 				$xhtml = true;
@@ -162,7 +163,6 @@ class MarkdownTestHelper
 		foreach ($node_list as $node) {
 			switch ($node->nodeType) {
 				case XML_ELEMENT_NODE:
-					/** @var DOMElement $node */
 					static::normalizeElementContent($node, $whitespace_preserve);
 					static::normalizeElementAttributes($node);
 
@@ -207,7 +207,6 @@ class MarkdownTestHelper
 					break;
 
 				case XML_TEXT_NODE:
-					/** @var DOMText $node */
 					if (!$whitespace_preserve) {
 						if (trim($node->data) === "") {
 							$node->data = $whitespace;
@@ -223,8 +222,8 @@ class MarkdownTestHelper
 			($whitespace === "\n\n" || $whitespace === "\n")) {
 			if ($element->firstChild) {
 				if ($element->firstChild->nodeType == XML_TEXT_NODE) {
-					$element->firstChild->data = // @phpstan-ignore-line
-						preg_replace('{^\s+}', "\n", $element->firstChild->data ?? '');
+					$element->firstChild->data =
+						preg_replace('{^\s+}', "\n", $element->firstChild->data);
 				}
 				else {
 					$element->insertBefore(new DOMText("\n"), $element->firstChild);
@@ -232,8 +231,8 @@ class MarkdownTestHelper
 			}
 			if ($element->lastChild) {
 				if ($element->lastChild->nodeType == XML_TEXT_NODE) {
-					$element->lastChild->data = // @phpstan-ignore-line
-						preg_replace('{\s+$}', "\n", $element->lastChild->data ?? '');
+					$element->lastChild->data =
+						preg_replace('{\s+$}', "\n", $element->lastChild->data);
 				}
 				else {
 					$element->insertBefore(new DOMText("\n"), null);
