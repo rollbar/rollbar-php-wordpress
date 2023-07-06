@@ -4,8 +4,16 @@
     "type": "wordpress-plugin",
     "require": {
         "rollbar/rollbar": "^1",
-        "phpunit/phpunit": "4.8.*",
         "michelf/php-markdown": "*"
+    },
+	"require-dev": {
+        "yoast/phpunit-polyfills": "^2.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+		"squizlabs/php_codesniffer": "^3.5",
+		"phpcompatibility/php-compatibility": "^9.3",
+		"wp-coding-standards/wpcs": "^2.2",
+        "sirbrillig/phpcs-variable-analysis": "^2.8",
+		"spatie/phpunit-watcher": "^1.23"
     },
     "license": "GNU GPL",
     "authors": [
@@ -47,5 +55,10 @@
         "pre-test": [
             "export $(cat phpunit.env | xargs) && bash bin/install-wp-tests.sh $WP_TEST_DB $WP_TEST_USER \"$WP_TEST_PASS\" $WP_TEST_HOST $WP_VERSION || true"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
