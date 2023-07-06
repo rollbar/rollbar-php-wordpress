@@ -33,6 +33,7 @@ dwsync.xml
 # PHPUnit
 phpunit.xml
 phpunit.env
+.phpunit.result.cache
 
 # PHPCS
 phpcs.xml
