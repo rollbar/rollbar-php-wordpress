@@ -1,0 +1,12 @@
+{
+	"core": "WordPress/WordPress",
+	"plugins": [ "." ],
+	"env": {
+		"tests": {
+			"mappings": {
+				"wp-content/plugins/rollbar": ".",
+				"wp-content/mu-plugins/rollbar-mu-plugin.php": "./mu-plugin/rollbar-mu-plugin.php"
+			}
+		}
+	}
+}
