@@ -21,6 +21,13 @@ namespace Rollbar\Wordpress;
 if( !defined( 'ABSPATH' ) ) exit;
 
 /*
+ * Ensure that the project is built before loading
+ */
+if ( ! file_exists( \plugin_dir_path( __FILE__ ) . 'vendor/autoload.php'  ) ) {
+	wp_die( __( 'Please run `composer install --no-dev` or install a built copy of the Rollbar plugin', 'rollbar' ) );
+}
+
+/*
  * Libs
  * 
  * The included copy of rollbar-php is only going to be loaded if the it has
