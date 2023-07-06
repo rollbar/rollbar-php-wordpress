@@ -4,7 +4,7 @@
     "type": "wordpress-plugin",
     "require": {
         "rollbar/rollbar": "^1",
-        "michelf/php-markdown": "*"
+        "michelf/php-markdown": "1.9.1"
     },
 	"require-dev": {
         "yoast/phpunit-polyfills": "^2.0",
