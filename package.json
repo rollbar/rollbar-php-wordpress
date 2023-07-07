@@ -10,10 +10,10 @@
     "wp-env": "wp-env",
     "pretest": "npm-run-all start",
     "test": "npm-run-all test:php",
-    "tests-composer-update": "npm run wp-env run tests-cli --env-cwd=wp-content/plugins/rollbar-php-wordpress composer update",
-    "tests-composer-install": "npm run wp-env run tests-cli --env-cwd=wp-content/plugins/rollbar-php-wordpress composer install --no-interaction",
+    "tests-composer-update": "npm run wp-env -- run --env-cwd='wp-content/plugins/rollbar-php-wordpress' tests-cli composer update",
+    "tests-composer-install": "npm run wp-env -- run --env-cwd='wp-content/plugins/rollbar-php-wordpress' tests-cli composer install --no-interaction",
     "pretest:php": "npm-run-all tests-composer-update tests-composer-install",
-    "test:php": "npm run wp-env run tests-wordpress /var/www/html/wp-content/plugins/rollbar-php-wordpress/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/rollbar-php-wordpress/phpunit.xml.dist",
+    "test:php": "npm run wp-env -- run tests-wordpress /var/www/html/wp-content/plugins/rollbar-php-wordpress/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/rollbar-php-wordpress/phpunit.xml.dist",
     "start": "npm run wp-env start"
   },
   "repository": {
