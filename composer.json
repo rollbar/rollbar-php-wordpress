@@ -2,10 +2,6 @@
     "name": "rollbar/rollbar-php-wordpress",
     "description": "WordPress plugin for Rollbar",
     "type": "wordpress-plugin",
-    "require": {
-        "rollbar/rollbar": "^1",
-        "michelf/php-markdown": "1.9.1"
-    },
 	"require-dev": {
         "yoast/phpunit-polyfills": "^2.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",

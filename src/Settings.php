@@ -309,7 +309,12 @@ class Settings
     
     private function parseSettingDescription($option)
     {
-        $readme = file_get_contents(__DIR__ . '/../vendor/rollbar/rollbar/README.md');
+        
+        if ( version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
+            $readme = file_get_contents(__DIR__ . '/../php7/vendor/rollbar/rollbar/README.md');
+        } else {
+            $readme = file_get_contents(__DIR__ . '/../php8/vendor/rollbar/rollbar/README.md');
+        }
         
         $option_pos = stripos($readme, '<dt>' . $option);
 
