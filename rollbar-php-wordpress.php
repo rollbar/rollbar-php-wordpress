@@ -20,6 +20,17 @@ namespace Rollbar\Wordpress;
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+function composer_notice() {
+	$class = 'notice notice-error';
+	$message = __( 'Rollbar requires composer dependencies to be installed.', 'rollbar' );
+
+	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
+}
+
+if ( ! file_exists( \plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ){
+	add_action( 'admin_notices', __NAMESPACE__ . '\\composer_notice' ); 
+	return;
+}
 /*
  * Libs
  * 
