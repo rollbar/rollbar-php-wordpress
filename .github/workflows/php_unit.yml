@@ -5,10 +5,6 @@ name: Unit Tests
 on:
     pull_request:
     push:
-        branches:
-            - trunk
-            - 'release/**'
-            - 'wp/**'
     # Allow manually triggering the workflow.
     workflow_dispatch:
 
