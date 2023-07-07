@@ -21,8 +21,19 @@ jobs:
         runs-on: ubuntu-latest
         outputs:
             previous-wordpress-version: ${{ steps.get-previous-wordpress-version.outputs.previous-wordpress-version }}
+            latest-wordpress-version: ${{ steps.get-latest-wordpress-version.outputs.latest-wordpress-version }}
 
         steps:
+            - name: Get latest WordPress version
+              id: get-latest-wordpress-version
+              run: |
+                    curl \
+                        -H "Accept: application/json" \
+                        -o versions.json \
+                        "http://api.wordpress.org/core/stable-check/1.0/"
+                    LATEST_WP_VERSION=$(jq --raw-output 'with_entries(select(.value=="latest"))|keys[]' versions.json)
+                    echo "latest-wordpress-version=${LATEST_WP_VERSION}" >> $GITHUB_OUTPUT
+                    rm versions.json
             - name: Get previous WordPress version
               id: get-previous-wordpress-version
               run: |
