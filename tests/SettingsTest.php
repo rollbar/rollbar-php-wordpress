@@ -12,7 +12,7 @@ class SettingsTest extends BaseTestCase {
     
     private $subject;
     
-    public function setUp() : void
+    public function set_up() 
     {
         $this->subject = \Rollbar\Wordpress\Settings::instance();
     }
@@ -34,7 +34,7 @@ class SettingsTest extends BaseTestCase {
         );
     }
     
-    public function preUpdateProvider()
+    public static function preUpdateProvider()
     {
         return array(
             

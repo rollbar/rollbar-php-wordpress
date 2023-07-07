@@ -12,7 +12,7 @@ class PluginTest extends BaseTestCase {
     
     private $subject;
     
-    public function setUp() : void
+    public function set_up() 
     {
         $this->subject = \Rollbar\Wordpress\Plugin::instance();
     }
@@ -57,7 +57,7 @@ class PluginTest extends BaseTestCase {
         
     }
     
-    public function loggingLevelTestDataProvider()
+    public static function loggingLevelTestDataProvider()
     {
         return array(
                 array(

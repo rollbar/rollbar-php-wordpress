@@ -78,13 +78,6 @@ jobs:
                       wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
                     - php: '8.2'
                       wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
-                    # Test with trunk.
-                    - php: '7.0'
-                      wordpress: 'trunk'
-                    - php: '7.4'
-                      wordpress: 'trunk'
-                    - php: '8.2'
-                      wordpress: 'trunk'
 
         env:
             WP_ENV_PHP_VERSION: ${{ matrix.php }}
@@ -108,6 +101,8 @@ jobs:
                   curl --version
                   git --version
                   locale -a
+                  echo "PHP version: ${WP_ENV_PHP_VERSION}"
+                  echo "WordPress version: ${WP_ENV_CORE}"
 
             - name: Start Docker environment
               run: npm run wp-env start
