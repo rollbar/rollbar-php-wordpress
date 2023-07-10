@@ -200,12 +200,22 @@ class Plugin {
         
         try {
             $plugin->initPhpLogging();
-            
-            $response = \Rollbar\Rollbar::log(
-                Level::INFO,
-                "Test message from Rollbar Wordpress plugin using PHP: ".
-                "integration with Wordpress successful"
-            );
+
+            // in the PHP8 version, $response will be null if we use `log` instead of `report`
+            if ( is_callable( '\Rollbar\Rollbar::report' ) ){
+                $response = \Rollbar\Rollbar::report(
+                    Level::INFO,
+                    "Test message from Rollbar Wordpress plugin using PHP: ".
+                    "integration with Wordpress successful"
+                );
+            } else {
+                $response = \Rollbar\Rollbar::log(
+                    Level::INFO,
+                    "Test message from Rollbar Wordpress plugin using PHP: ".
+                    "integration with Wordpress successful"
+                );
+            }
+
             
         } catch( \Exception $exception ) {
             
