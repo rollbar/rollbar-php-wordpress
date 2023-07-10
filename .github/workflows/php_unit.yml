@@ -69,7 +69,7 @@ jobs:
                     - '8.0'
                     - '8.1'
                     - '8.2'
-                wordpress: [''] # Latest WordPress version.
+                wordpress: ["${{needs.compute-previous-wordpress-version.outputs.latest-wordpress-version}}" ] # Latest WordPress version.
                 include:
                     # Test with the previous WP version.
                     - php: '7.0'
@@ -78,6 +78,13 @@ jobs:
                       wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
                     - php: '8.2'
                       wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
+                    # Test with the upcoming WP version.
+                    - php: '7.0'
+                      wordpress: '' 
+                    - php: '7.4'
+                      wordpress: '' 
+                    - php: '8.2'
+                      wordpress: '' 
 
         env:
             WP_ENV_PHP_VERSION: ${{ matrix.php }}
