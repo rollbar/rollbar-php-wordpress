@@ -44,12 +44,13 @@ class Settings
                 array("jquery"),
                 Plugin::VERSION
             );
-            
+
             \wp_localize_script(
                 'RollbarWordpressSettings.js', 
                 'RollbarWordpress', 
                 array(
-                    'plugin_url' => \plugin_dir_url(__FILE__) . "../",
+					// This is used to load the rollbar snippet, assume the php8 version is more recent. 
+                    'plugin_url' => \plugin_dir_url(__FILE__) . "../php8/",
                 )
             );
             
