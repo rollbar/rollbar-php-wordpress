@@ -75,11 +75,11 @@ The original author of this package is [@flowdee](https://twitter.com/flowdee/).
 
 ## Testing
 
-The following is Mac/Linux only - Windows is not supported.
+In order to run the tests, you will need to install the dependencies for [@wordpress/env](https://www.npmjs.com/package/@wordpress/env) including Node.js, git, and docker.
 
-Before you run tests, provide test database credentials in `phpunit.env` (you can copy `phpunit.env.dist`, removing the comment in the first line).  Then start your `mysqld` service.
-
-Tests are in `tests`; to run them, do `composer test`. To fix code style issues, do `composer fix`.
+1. npm install
+2. npm run test
+You can set the `WP_ENV_PHP_VERSION` enviormental variable to test with different versions of PHP.  If you are changing the version, you can do so by running `WP_ENV_PHP_VERSION="8.2" npm run wp-env start -- --update` and setting the enviornmental variable based on 
 
 ## Tagging
 

@@ -39,16 +39,16 @@
     },
     "extra": {
         "scripts-description": {
-            "test": "Run all tests. Make sure that local Mysql server is running."
+            "test": "Run all tests. Wrapper around npm run test"
         }
      },
     "scripts": {
         "test": [
             "@pre-test",
-            "phpunit --coverage-clover build/logs/clover.xml"
+            "npm run test"
         ],
         "pre-test": [
-            "export $(cat phpunit.env | xargs) && bash bin/install-wp-tests.sh $WP_TEST_DB $WP_TEST_USER \"$WP_TEST_PASS\" $WP_TEST_HOST $WP_VERSION || true"
+            "npm install"
         ]
     },
     "config": {
