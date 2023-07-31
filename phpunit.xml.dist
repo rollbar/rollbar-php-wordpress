@@ -9,6 +9,8 @@
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix=".php">./tests/</directory>
+			<exclude>./tests/bootstrap.php</exclude>
+			<exclude>./tests/BaseTestCase.php</exclude>
         </testsuite>
     </testsuites>
     <filter>

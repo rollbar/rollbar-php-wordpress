@@ -1,0 +1,123 @@
+name: Unit Tests
+
+# Since Unit Tests are required to pass for each PR,
+# we cannot disable them for documentation-only changes.
+on:
+    pull_request:
+    push:
+    # Allow manually triggering the workflow.
+    workflow_dispatch:
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+    # The concurrency group contains the workflow name and the branch name for pull requests
+    # or the commit hash for any other events.
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+    cancel-in-progress: true
+
+jobs:
+    compute-previous-wordpress-version:
+        name: Compute previous WordPress version
+        runs-on: ubuntu-latest
+        outputs:
+            previous-wordpress-version: ${{ steps.get-previous-wordpress-version.outputs.previous-wordpress-version }}
+            latest-wordpress-version: ${{ steps.get-latest-wordpress-version.outputs.latest-wordpress-version }}
+
+        steps:
+            - name: Get latest WordPress version
+              id: get-latest-wordpress-version
+              run: |
+                    curl \
+                        -H "Accept: application/json" \
+                        -o versions.json \
+                        "http://api.wordpress.org/core/stable-check/1.0/"
+                    LATEST_WP_VERSION=$(jq --raw-output 'with_entries(select(.value=="latest"))|keys[]' versions.json)
+                    echo "latest-wordpress-version=${LATEST_WP_VERSION}" >> $GITHUB_OUTPUT
+                    rm versions.json
+            - name: Get previous WordPress version
+              id: get-previous-wordpress-version
+              run: |
+                  curl \
+                    -H "Accept: application/json" \
+                    -o versions.json \
+                    "http://api.wordpress.org/core/stable-check/1.0/"
+                  LATEST_WP_VERSION=$(jq --raw-output 'with_entries(select(.value=="latest"))|keys[]' versions.json)
+                  IFS='.' read LATEST_WP_MAJOR LATEST_WP_MINOR LATEST_WP_PATCH <<< "${LATEST_WP_VERSION}"
+                  if [[ ${LATEST_WP_MINOR} == "0" ]]; then
+                    PREVIOUS_WP_SERIES="$((LATEST_WP_MAJOR - 1)).9"
+                  else
+                    PREVIOUS_WP_SERIES="${LATEST_WP_MAJOR}.$((LATEST_WP_MINOR - 1))"
+                  fi
+                  PREVIOUS_WP_VERSION=$(jq --raw-output --arg series "${PREVIOUS_WP_SERIES}" 'with_entries(select(.key|startswith($series)))|keys[-1]' versions.json)
+                  echo "previous-wordpress-version=${PREVIOUS_WP_VERSION}" >> $GITHUB_OUTPUT
+                  rm versions.json
+
+    test-php:
+        name: PHP ${{ matrix.php }}${{ matrix.wordpress != '' && format( ' (WP {0}) ', matrix.wordpress ) || '' }} on ubuntu-latest
+        needs: compute-previous-wordpress-version
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        strategy:
+            fail-fast: false
+            matrix:
+                php:
+                    - '7.0'
+                    - '7.1'
+                    - '7.2'
+                    - '7.3'
+                    - '7.4'
+                    - '8.0'
+                    - '8.1'
+                    - '8.2'
+                wordpress: ["${{needs.compute-previous-wordpress-version.outputs.latest-wordpress-version}}" ] # Latest WordPress version.
+                include:
+                    # Test with the previous WP version.
+                    - php: '7.0'
+                      wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
+                    - php: '7.4'
+                      wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
+                    - php: '8.2'
+                      wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
+                    # Test with the upcoming WP version.
+                    - php: '7.0'
+                      wordpress: '' 
+                    - php: '7.4'
+                      wordpress: '' 
+                    - php: '8.2'
+                      wordpress: '' 
+
+        env:
+            WP_ENV_PHP_VERSION: ${{ matrix.php }}
+            WP_ENV_CORE: ${{ matrix.wordpress == '' && 'WordPress/WordPress' || format( 'https://wordpress.org/wordpress-{0}.zip', matrix.wordpress ) }}
+
+        steps:
+            - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Docker debug information
+              run: |
+                  docker -v
+                  docker-compose -v
+
+            - name: General debug information
+              run: |
+                  npm --version
+                  node --version
+                  curl --version
+                  git --version
+                  locale -a
+                  echo "PHP version: ${WP_ENV_PHP_VERSION}"
+                  echo "WordPress version: ${WP_ENV_CORE}"
+
+            - name: Start Docker environment
+              run: npm run wp-env start
+
+            - name: Log running Docker containers
+              run: docker ps -a
+
+            - name: Running unit tests
+              run: |
+                  set -o pipefail
+                  npm run test:php

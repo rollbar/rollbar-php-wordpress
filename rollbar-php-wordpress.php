@@ -7,7 +7,7 @@
  * Author:          Rollbar
  * Author URI:      https://rollbar.com
  * Text Domain:     rollbar
- * Requires PHP:    5.6
+ * Requires PHP:    7.0
  * Tested up to:    5.8.4
  *
  * @package         Rollbar\Wordpress
@@ -27,7 +27,12 @@ if( !defined( 'ABSPATH' ) ) exit;
  * not been loaded through Composer yet.
  */
 if( !class_exists('Rollbar\Rollbar') || !class_exists('Rollbar\Wordpress\Plugin') ) {
-    require_once \plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+	// if PHP version is less than 8, use the php7 dependencies
+	if ( version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
+		require_once \plugin_dir_path( __FILE__ ) . 'php7/vendor/autoload.php';
+	} else {
+		require_once \plugin_dir_path( __FILE__ ) . 'php8/vendor/autoload.php';
+	}
 }
 
 \Rollbar\Wordpress\Plugin::load();

@@ -12,7 +12,7 @@ class DefaultsTest extends BaseTestCase {
     
     private $subject;
     
-    public function setUp()
+    public function set_up() 
     {
         $this->subject = Defaults::instance();
     }

@@ -1,0 +1,12 @@
+vendor
+composer.lock
+build
+.phpunit.result.cache
+.phpunit.cache
+
+# Files editors may leave around that aren't related to any kind of
+# build artifacts
+*.swp
+*.swo
+.idea
+.vscode

@@ -1,12 +1,15 @@
 <?php
 namespace Rollbar\Wordpress\Tests;
 
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
+
 /**
  * Class BaseTestCase
  *
  * @package Rollbar\Wordpress\Tests
  */
-abstract class BaseTestCase extends \WP_UnitTestCase {
+abstract class BaseTestCase extends TestCase {
     
     function getAccessToken()
     {

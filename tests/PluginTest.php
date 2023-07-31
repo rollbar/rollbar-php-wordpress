@@ -12,7 +12,7 @@ class PluginTest extends BaseTestCase {
     
     private $subject;
     
-    public function setUp()
+    public function set_up() 
     {
         $this->subject = \Rollbar\Wordpress\Plugin::instance();
     }
@@ -44,10 +44,15 @@ class PluginTest extends BaseTestCase {
         $dataBuilder = $logger->getDataBuilder();
         
         $errorWrapper = $dataBuilder->generateErrorWrapper(
-            $errorLevel, $errorMsg, "", ""
+            $errorLevel, $errorMsg, "", 0
         );
         
-        $response = $logger->log(Level::ERROR, $errorWrapper);
+        // Log stopped returning the resposne in v4
+        if ( method_exists( $logger, 'report' )){
+            $response = $logger->report( Level::ERROR, $errorWrapper );
+        } else {
+            $response = $logger->log(Level::ERROR, $errorWrapper);
+        }
         
         if ($shouldIgnore) {
             $this->assertEquals("Ignored", $response->getInfo());
@@ -57,7 +62,7 @@ class PluginTest extends BaseTestCase {
         
     }
     
-    public function loggingLevelTestDataProvider()
+    public static function loggingLevelTestDataProvider()
     {
         return array(
                 array(
