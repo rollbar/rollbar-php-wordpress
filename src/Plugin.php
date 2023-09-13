@@ -350,6 +350,13 @@ class Plugin {
             } else if (isset($config[$setting]) && $config[$setting] === 'true') {
                 $config[$setting] = true;
             }
+
+            // also handle 1 and 0 as booleans
+            else if (isset($config[$setting]) && $config[$setting] === '0') {
+                $config[$setting] = false;
+            } else if (isset($config[$setting]) && $config[$setting] === '1') {
+                $config[$setting] = true;
+            }
         }
         
         return $config;

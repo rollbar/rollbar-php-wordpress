@@ -61,6 +61,22 @@ class PluginTest extends BaseTestCase {
         }
         
     }
+
+    /**
+     * Tests to ensure bools are properly converted from "1" and "0" strings
+     * 
+     * @ticket https://github.com/rollbar/rollbar-php-wordpress/issues/119
+     */
+    public function testSendMessageTraceBool(){
+        $plugin = $this->subject;
+
+        $plugin->setting( 'send_message_trace', '1' );
+        $plugin->setting( 'report_suppressed', '0' );
+        $data = $plugin->buildPHPConfig();
+
+        $this->assertTrue( $data['send_message_trace'] );
+        $this->assertFalse( $data['report_suppressed'] );
+    }
     
     public static function loggingLevelTestDataProvider()
     {
