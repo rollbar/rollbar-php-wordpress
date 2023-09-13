@@ -1,6 +1,6 @@
 {
   "name": "rollbar-php-wordpress",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "Official Rollbar full-stack error tracking for WordPress supported by Rollbar, Inc.",
   "main": "index.js",
   "directories": {
