@@ -1,0 +1,24 @@
+/**
+ * Rollbar for WordPress admin CSS.
+ */
+
+.rollbar-settings-section-header .section-heading {
+    cursor: pointer;
+}
+
+.rollbar-settings-section-header .dashicons {
+    transform: rotate(270deg);
+    color: #2271b1;
+}
+
+.rollbar-settings-section-header.open .dashicons {
+    transform: rotate(90deg);
+}
+
+.rollbar-settings-section-header + table.form-table {
+    display: none;
+}
+
+.rollbar-settings-section-header.open + table.form-table {
+    display: table;
+}
