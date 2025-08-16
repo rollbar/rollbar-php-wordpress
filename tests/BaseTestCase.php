@@ -1,24 +1,23 @@
 <?php
-namespace Rollbar\Wordpress\Tests;
+
+namespace Rollbar\WordPress\Tests;
 
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-
 
 /**
  * Class BaseTestCase
  *
- * @package Rollbar\Wordpress\Tests
+ * @package Rollbar\WordPress\Tests
  */
-abstract class BaseTestCase extends TestCase {
-    
-    function getAccessToken()
+abstract class BaseTestCase extends TestCase
+{
+    public function getAccessToken(): string
     {
-        return $_ENV['ROLLBAR_TEST_TOKEN'];
+        return $_ENV['ROLLBAR_TEST_TOKEN'] ?? '';
     }
-    
-    function getEnvironment()
+
+    public function getEnvironment(): string
     {
-        return "testing";
+        return 'testing';
     }
-    
 }
