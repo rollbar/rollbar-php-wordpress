@@ -57,6 +57,9 @@ jobs:
           echo "PHP version: ${WP_ENV_PHP_VERSION}"
           echo "WordPress version: ${WP_ENV_CORE}"
 
+      - name: Install PHP Dependencies
+        run: composer install --no-interaction --no-progress --no-suggest --optimize-autoloader
+
       - name: Start Docker environment
         run: npm run wp-env start
 
