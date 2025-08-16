@@ -3,6 +3,7 @@
 namespace Rollbar\WordPress\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Rollbar\Payload\Level;
 use Rollbar\Rollbar;
@@ -56,6 +57,7 @@ class PluginTest extends BaseTestCase
     }
 
     #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testDisableAdmin(): void
     {
         self::assertFalse(Plugin::disabledAdmin());
@@ -64,6 +66,7 @@ class PluginTest extends BaseTestCase
     }
 
     #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testDisableAdmin2(): void
     {
         self::assertFalse(Plugin::disabledAdmin());
@@ -72,6 +75,7 @@ class PluginTest extends BaseTestCase
     }
 
     #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testHideAdmin(): void
     {
         add_action('rollbar_disable_admin', '__return_false');

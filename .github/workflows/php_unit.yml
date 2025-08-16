@@ -66,4 +66,4 @@ jobs:
       - name: Running unit tests
         run: |
           set -o pipefail
-          npm run test:php
+          npm run test
