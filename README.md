@@ -46,13 +46,174 @@ This is a recommended way to install Rollbar plugin for advanced projects. This 
 2. In your `composer.json` add `wpackagist-plugin/rollbar` to your `require` section, i.e.:
 ```json
   "require": {
-    "php": ">=5.5",
+    "php": ">=8.1",
     ...,
     "wpackagist-plugin/rollbar": "*"
   }
 ```
 3. Issue command `composer install` in the root directory of your WordPress project.
 4. Go to step #4 above.
+
+## Advanced Use
+
+### Constants
+
+The plugin provides a number of constants that can be used to configure the plugin. These should typically be defined in 
+the `wp-config.php` file.
+
+Note: If you define these constants, they will override the settings defined in the WordPress Admin.
+
+`ROLLBAR_DISABLE_ADMIN` - (optional) Removes the Rollbar Admin menu from the WordPress Admin if set to `true`. This 
+allows for the plugin to be used without the admin settings page, for example, if the plugin is managed via the 
+`wp-config.php` file.
+
+`ROLLBAR_SETTINGS` - (optional) An associative array of settings to override the settings values from the WordPress 
+Admin. Note: if you disable the admin settings page with `ROLLBAR_DISABLE_ADMIN` constant, this constant must be used to
+configure the plugin.
+
+`ROLLBAR_ACCESS_TOKEN` - The Rollbar PHP server access token.
+
+`ROLLBAR_CLIENT_ACCESS_TOKEN` - The Rollbar JS client access token.
+
+#### WordPress Constants
+
+The Rollbar plugin respects the following WordPress constants:
+
+`WP_ENV` - (optional) The environment name. This is used to determine the environment name for the Rollbar project.
+
+`WP_PROXY_HOST` - (optional) The proxy host. If both `WP_PROXY_HOST` and `WP_PROXY_PORT` are set, the plugin will use 
+the respect the HTTP proxy when making requests to Rollbar.
+
+`WP_PROXY_PORT` - (optional) The proxy port.
+
+`WP_PROXY_USERNAME` - (optional) The proxy username.
+
+`WP_PROXY_PASSWORD` - (optional) The proxy password.
+
+`WP_PROXY_BYPASS_HOSTS` - (optional) The proxy bypass hosts. This is a comma-separated list of hosts that should not be
+proxied. If proxying is enabled, but you don't want to proxy requests to Rollbar, you can add `api.rollbar.com` to this
+list.
+
+### Environment Variables
+
+The plugin looks for the following environment variables to configure itself. Note: these are overridden by the 
+constants defined above.
+
+`ROLLBAR_ACCESS_TOKEN` - The Rollbar PHP server access token.
+
+`ROLLBAR_CLIENT_ACCESS_TOKEN` - The Rollbar JS client access token.
+
+`WP_ENV` - (optional) The environment name. This is used to determine the environment name for the Rollbar project.
+
+### Filters
+
+The plugin provides a number of filters that allow you to customize the behavior of the plugin.
+
+### `apply_filters('rollbar_api_admin_permission', bool $value, string $route, WP_REST_Request $request)`
+
+Filter to allow or deny access to a Rollbar route in the WordPress REST API used in the WordPress Admin.
+
+**Parameters**
+
+* `bool $value` - The initial value. Defaults is `true` for admin users, `false` for non-admin users.
+* `string $route` - The route being accessed.
+* `WP_REST_Request $request` - The REST request object.
+
+### `apply_filters('rollbar_disable_admin', bool $disable)`
+
+Filter to disable the admin settings page of the plugin.
+
+This filter cannot override the `ROLLBAR_DISABLE_ADMIN` constant.
+
+**Parameters**
+
+* `bool $disable` - `true` to disable the admin settings page, `false` to enable it.
+
+### `apply_filters('rollbar_js_config', array $config)`
+
+Filters the Rollbar JavaScript configuration.
+
+**Parameters**
+
+* `array $config` - The Rollbar JavaScript configuration array.
+
+### `apply_filters('rollbar_plugin_settings', array $settings)`
+
+Filters the Rollbar plugin settings.
+
+**Parameters**
+
+* `array $settings` - The Rollbar plugin settings array.
+
+### `apply_filters('rollbar_php_config', array $config)`
+
+Filters the Rollbar Core SDK PHP configuration.
+
+**Parameters**
+
+* `array $config` - The Rollbar PHP configuration array.
+
+### `apply_filters('rollbar_telemetry_actions', array<string, int> $actions)`
+
+Filter the list of actions to instrument with Telemetry.
+
+**Parameters**
+
+* `array<string, int> $actions` - An associative array where the keys are action names and the values are the number of 
+  arguments accepted by the action.
+
+### `apply_filters('rollbar_telemetry_custom_handlers', array<string, callable(string, mixed...):string> $handlers)`
+
+Filter the list of custom action event handlers for Telemetry.
+
+Note: The custom action handler will only be called if the action is instrumented with Telemetry. This means you must 
+select the action on the settings page, or add it to the list of actions using the `rollbar_telemetry_actions` filter.
+
+**Parameters**
+
+* `array<string, callable(string, mixed...):string> $handlers` - An associative array where the keys are action names 
+  and the values are the custom event handler.
+
+### Telemetry
+
+Starting in version 3.0.0 of the Rollbar plugin, Telemetry is enabled by default. Telemetry is a feature that allows 
+the plugin to track events that occur in your WordPress installation prior to an exception or message being sent to 
+Rollbar. The Telemetry data is sent to Rollbar along with the exception or message, and can be used to provide 
+additional context and help debug the issue.
+
+You can modify the list of actions you want to instrument with Telemetry by selecting them on the settings page, or
+using the `rollbar_telemetry_actions` filter. To use a custom handler for a specific action, use the 
+`rollbar_telemetry_custom_handlers` filter. This can also be used to change the handler on any of the default actions.
+
+#### Registering custom actions
+
+You can also instrament custom actions like this:
+
+```php
+use Rollbar\WordPress\Telemetry\Listener;
+
+// Register a custom action with a custom handler function.
+$listener = Listener::getInstance()->instrumentAction(
+    action: 'my_custom_action',
+    priority: 10,
+    acceptedArgs: 2,
+    argsHandler: function ($action, ...$args) {
+        $foo = $action;
+        return 'custom_listener_test_action: ' . implode(', ', $args);
+    },
+);
+
+// Use the default handler for the action.
+$listener = Listener::getInstance()->instrumentAction(
+    action: 'my_other_custom_action',
+    priority: 10,
+    acceptedArgs: 1,
+    argsHandler: Listener::concatExtraArgs(...),
+);
+```
+
+Of course, you can also call `Rollbar::captureTelemetryEvent()` directly to send custom events. See the 
+[Telemetry documentation](https://docs.rollbar.com/docs/php-telemetry) for more information.
 
 ## Help / Support
 
@@ -90,7 +251,7 @@ This is only for contributors with committer access:
     2. Add record in the `Changelog` section of the `readme.txt`.
     3. Add record in the `Upgrade Notice` section of the `readme.txt`.
     4. Bump the plugin version in `rollbar-php-wordpress.php` in the `Version:` comment.
-    5. Bump the plugin version in `src/Plugin.php` in the `\Rollbar\Wordpress\Plugin::VERSION` constant.
+    5. Bump the plugin version in `src/Plugin.php` in the `\Rollbar\WordPress\Plugin::VERSION` constant.
     5. Add and commit the changes you made to bump the plugin version: `git add readme.txt rollbar-php-wordpress.php src/Plugin.php && git commit -m"Bump version to v[version number]"`
     6. Bump versions of the JS and CSS files versions in Settings.php class to force refresh of those assets on users' installations.
     7. `git push origin master`

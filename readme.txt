@@ -74,7 +74,7 @@ This is a recommended way to install Rollbar plugin for advanced projects. This 
 2. In your `composer.json` add `wpackagist-plugin/rollbar` to your `require` section, i.e.:
 ```
   "require": {
-    "php": ">=5.5",
+    "php": ">=8.1",
     ...,
     "wpackagist-plugin/rollbar": "*"
   }
@@ -105,6 +105,23 @@ Yes. It's actually the recommended method of installation.
 
 == Changelog ==
 
+= Version 3.0.0 (pending)
+* Fixed CSRF vulnerability.
+* Removed support for PHP 8.0 and below.
+* Updated and improved the settings page.
+* Updated the Rollbar core PHP SDK to v4.1.
+* Added support for telemetry and added auto-instrumentation.
+* Added support for `ROLLBAR_DISABLE_ADMIN` to remove the plugin settings page from the admin.
+* Added support for `ROLLBAR_SETTINGS` to configure the plugin without the admin page.
+* Added support for `ROLLBAR_CLIENT_ACCESS_TOKEN` constant or environment variable to set the client access token.
+* Added support for `WP_PROXY_BYPASS_HOSTS`, `WP_PROXY_USERNAME`, and `WP_PROXY_PASSWORD` for better proxy management.
+* Added `rollbar_api_admin_permission` filter to allow custom authorization of the admin API.
+* Added `rollbar_disable_admin` filter to allow custom disabling of the admin page.
+* Added `rollbar_php_config` filter to allow more exact control over Rollbar PHP configurations.
+* Added `rollbar_telemetry_actions` filter to allow control of which actions are logged via telemetry.
+* Added `rollbar_telemetry_custom_handlers` filter to allow custom control over what is logged in telemetry messages.
+* Added 'framework' details with the WordPress version to the item payload.
+
 = Version 2.7.1 (September 13 2023)
 * Fix issue that could lead to fatal error with some settings (https://github.com/rollbar/rollbar-php-wordpress/pull/120)
 
@@ -128,7 +145,7 @@ Yes. It's actually the recommended method of installation.
 * fix(initPhpLogging): Moving fetch settings to before settings check. (https://github.com/rollbar/rollbar-php-wordpress/pull/84)
 
 = Version 2.5.1 (February 20th 2019) =
-* Fixed a call to Rollbar\Wordpress\Defaults for enableMustUsePlugin (https://github.com/rollbar/rollbar-php-wordpress/pull/75)
+* Fixed a call to Rollbar\WordPress\Defaults for enableMustUsePlugin (https://github.com/rollbar/rollbar-php-wordpress/pull/75)
 
 = Version 2.5.0 (February 19th 2019) =
 * Moved Rollbar initialization from `plugins_loaded` hook to the invocation of the main plugin file (https://github.com/rollbar/rollbar-php-wordpress/issues/73)
@@ -201,7 +218,7 @@ Yes. It's actually the recommended method of installation.
 
 = Version 2.1.0 (11th October 2017) =
 * Added "Send test message to Rollbar" button
-* Fixed the plugin's name inconsistency between Wordpress plugin directory and composer.
+* Fixed the plugin's name inconsistency between WordPress plugin directory and composer.
 
 = Version 2.0.1 (6th October 2017) =
 * Fixed RollbarJsHelper class loading bug in src/Plugin.php (https://github.com/rollbar/rollbar-php-wordpress/issues/23)
@@ -247,7 +264,7 @@ Updated admin test results to show a skipped test as a success. Fixed new sessio
 * fix(initPhpLogging): Moving fetch settings to before settings check. (https://github.com/rollbar/rollbar-php-wordpress/pull/84)
 
 = Version 2.5.1 (February 20th 2019) =
-* Fixed a call to Rollbar\Wordpress\Defaults for enableMustUsePlugin (https://github.com/rollbar/rollbar-php-wordpress/pull/75)
+* Fixed a call to Rollbar\WordPress\Defaults for enableMustUsePlugin (https://github.com/rollbar/rollbar-php-wordpress/pull/75)
 
 = Version 2.5.0 (February 19th 2019) =
 * Moved Rollbar initialization from `plugins_loaded` hook to the invocation of the main plugin file (https://github.com/rollbar/rollbar-php-wordpress/issues/73)
@@ -320,7 +337,7 @@ Updated admin test results to show a skipped test as a success. Fixed new sessio
 
 = Version 2.1.0 (11th October 2017) =
 * Added "Send test message to Rollbar" button
-* Fixed the plugin's name inconsistency between Wordpress plugin directory and composer.
+* Fixed the plugin's name inconsistency between WordPress plugin directory and composer.
 
 = Version 2.0.1 (6th October 2017) =
 * Fixed RollbarJsHelper class loading bug in src/Plugin.php (https://github.com/rollbar/rollbar-php-wordpress/issues/23)
