@@ -2,13 +2,9 @@
 
 namespace Rollbar\WordPress\Tests\Html\Input;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use Rollbar\WordPress\Html\Input\AbstractInput;
 use Rollbar\WordPress\Html\Input\BooleanInput;
 use Rollbar\WordPress\Tests\BaseTestCase;
 
-#[CoversClass(BooleanInput::class)]
-#[CoversClass(AbstractInput::class)]
 class BooleanInputTest extends BaseTestCase
 {
     private BooleanInput $subject;

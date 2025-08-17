@@ -2,9 +2,6 @@
 
 namespace Rollbar\WordPress\Tests;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use PHPUnit\Framework\Attributes\TestWith;
 use Rollbar\WordPress\Lib\AbstractSingleton;
 use Rollbar\WordPress\Settings;
 use Rollbar\WordPress\Settings\SettingType;
@@ -59,7 +56,9 @@ class SettingsTest extends BaseTestCase
         self::assertTrue($settings->getDefaultOption('capture_error_stacktraces'));
     }
 
-    #[DataProvider('preUpdateProvider')]
+    /**
+     * @dataProvider preUpdateProvider
+     */
     public function testPreUpdate($expected, $data): void
     {
         self::assertEquals(
@@ -77,26 +76,31 @@ class SettingsTest extends BaseTestCase
         self::assertSame('bar', $settings->get('foo'));
     }
 
-    #[TestWith([true, true])]
-    #[TestWith([false, false])]
-    #[TestWith(['false', false])]
-    #[TestWith(['true', true])]
-    #[TestWith(['1', true])]
-    #[TestWith(['0', false])]
-    #[TestWith(['', false])]
-    #[TestWith(['yes', true])]
-    #[TestWith(['no', false])]
-    #[TestWith(['on', true])]
-    #[TestWith(['off', false])]
-    #[TestWith([0, false])]
-    #[TestWith([1, true])]
-    #[TestWith([-1, true])]
+    /**
+     * @testWith [true, true]
+     * @testWith [false, false]
+     * @testWith ['false', false]
+     * @testWith ['true', true]
+     * @testWith ['1', true]
+     * @testWith ['0', false]
+     * @testWith ['', false]
+     * @testWith ['yes', true]
+     * @testWith ['no', false]
+     * @testWith ['on', true]
+     * @testWith ['off', false]
+     * @testWith [0, false]
+     * @testWith [1, true]
+     * @testWith [-1, true]
+     */
     public function testToBoolean($value, $expected): void
     {
         self::assertSame($expected, Settings::toBoolean($value));
     }
 
-    #[RunInSeparateProcess]
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testRollbarSettingsConstant(): void
     {
         define('ROLLBAR_SETTINGS', [
@@ -110,7 +114,10 @@ class SettingsTest extends BaseTestCase
         self::assertSame(['bar'], Settings::getInstance()->get('scrub_fields'));
     }
 
-    #[RunInSeparateProcess]
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testRollbarSettingsConstantPriority(): void
     {
         define('ROLLBAR_SETTINGS', [

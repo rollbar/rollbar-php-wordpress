@@ -2,7 +2,6 @@
 
 namespace Rollbar\WordPress\Tests\Telemetry;
 
-use PHPUnit\Framework\Attributes\TestWith;
 use Rollbar\Rollbar;
 use Rollbar\Telemetry\EventLevel;
 use Rollbar\Telemetry\EventType;
@@ -59,13 +58,9 @@ class ListenerTest extends BaseTestCase
         self::assertTrue(has_action('delete_user'));
     }
 
-    #[TestWith(['delete_user', [true], 'delete_user: true'])]
-    #[TestWith(['register_post', [true, 1], 'register_post: true, 1'])]
-    #[TestWith(['wpmu_new_user', ['foo', 'bar'], 'wpmu_new_user: foo, bar'])]
-    #[TestWith(['check_admin_referer', [false], 'check_admin_referer: false'])]
-    #[TestWith(['admin_init', [[1, 2, 3, 'four']], 'admin_init: Array(4)'])]
-    #[TestWith(['wp_footer', [null], 'wp_footer: null'])]
-    #[TestWith(['edit_link', [5.84], 'edit_link: 5.84'])]
+    /**
+     * @dataProvider dataProviderConcatExtraArgs
+     */
     public function testConcatExtraArgs(string $action, array $args, string $expected): void
     {
         self::assertSame($expected, Listener::concatExtraArgs($action, ...$args));
@@ -92,5 +87,18 @@ class ListenerTest extends BaseTestCase
 
         self::assertSame('test', $last->body->message);
         self::assertSame(EventLevel::Critical, $last->level);
+    }
+
+    public static function dataProviderConcatExtraArgs(): array
+    {
+        return [
+            ['delete_user', [true], 'delete_user: true'],
+            ['register_post', [true, 1], 'register_post: true, 1'],
+            ['wpmu_new_user', ['foo', 'bar'], 'wpmu_new_user: foo, bar'],
+            ['check_admin_referer', [false], 'check_admin_referer: false'],
+            ['admin_init', [[1, 2, 3, 'four']], 'admin_init: Array(4)'],
+            ['wp_footer', [null], 'wp_footer: null'],
+            ['edit_link', [5.84], 'edit_link: 5.84'],
+        ];
     }
 }
