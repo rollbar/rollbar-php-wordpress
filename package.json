@@ -12,7 +12,7 @@
         "test": "npm-run-all test:php test:phpcs",
         "tests-composer-update": "WP_ENV_PHP_VERSION='8.1' npm run wp-env -- run --env-cwd='wp-content/plugins/rollbar' tests-cli composer update",
         "tests-composer-install": "WP_ENV_PHP_VERSION='8.1' npm run wp-env -- run --env-cwd='wp-content/plugins/rollbar' tests-cli composer install --no-interaction",
-        "pretest:php": "npm-run-all tests-composer-update tests-composer-install",
+        "pretest:php": "npm-run-all tests-composer-install",
         "test:php": "npm run wp-env -- run tests-wordpress /var/www/html/wp-content/plugins/rollbar/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/rollbar/phpunit.xml",
         "test:phpcs": "npm run wp-env -- run tests-wordpress /var/www/html/wp-content/plugins/rollbar/vendor/bin/phpcs --standard=/var/www/html/wp-content/plugins/rollbar/phpcs.xml -p",
         "start": "npm run wp-env start",
