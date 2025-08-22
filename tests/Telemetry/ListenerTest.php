@@ -7,6 +7,7 @@ use Rollbar\Telemetry\EventLevel;
 use Rollbar\Telemetry\EventType;
 use Rollbar\WordPress\Telemetry\Listener;
 use Rollbar\WordPress\Tests\BaseTestCase;
+use Rollbar\WordPress\Tests\fixtures\TestEnum;
 
 class ListenerTest extends BaseTestCase
 {
@@ -91,6 +92,7 @@ class ListenerTest extends BaseTestCase
 
     public static function dataProviderConcatExtraArgs(): array
     {
+        $file = fopen('php://memory', 'r+');
         return [
             ['delete_user', [true], 'delete_user: true'],
             ['register_post', [true, 1], 'register_post: true, 1'],
@@ -99,6 +101,10 @@ class ListenerTest extends BaseTestCase
             ['admin_init', [[1, 2, 3, 'four']], 'admin_init: Array(4)'],
             ['wp_footer', [null], 'wp_footer: null'],
             ['edit_link', [5.84], 'edit_link: 5.84'],
+            ['edit_link', [(object)['id' => 123]], 'edit_link: object(stdClass) {id: 123}'],
+            ['edit_link', [TestEnum::Bar], 'edit_link: enum(Rollbar\WordPress\Tests\fixtures\TestEnum::Bar)'],
+            ['edit_link', [$file], 'edit_link: resource(stream: ' . get_resource_id($file) . ')'],
+            ['edit_link', [self::dataProviderConcatExtraArgs(...)], 'edit_link: closure'],
         ];
     }
 }

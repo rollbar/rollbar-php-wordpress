@@ -14,12 +14,12 @@ defined('ABSPATH') || exit;
 <hr>
 <div class="rollbar-settings-section-header">
     <h2 id="<?= $id ?>" class="section-heading">
-        <?= $title ?>
+        <?= $title // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not user input. ?>
         <span class="dashicons dashicons-admin-collapse"></span>
     </h2>
     <?php if (!empty($description)) : ?>
         <div class="">
-            <?= $description ?>
+            <?= $description // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not user input. ?>
         </div>
     <?php endif; ?>
 </div>

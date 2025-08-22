@@ -8,9 +8,8 @@
  * }[] $messages
  */
 
-echo 'foo';
 foreach ($messages as $message) : ?>
-<div class="notice notice-<?= $message['type'] ?> is-dismissible">
-    <p><?= $message['message'] ?></p>
+<div class="notice notice-<?= $message['type'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not user input. ?> is-dismissible">
+    <p><?= $message['message'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not user input. ?></p>
 </div>
 <?php endforeach; ?>

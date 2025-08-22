@@ -232,7 +232,9 @@ class Listener extends AbstractSingleton
         'manage_pages_columns' => 1,
         'manage_media_custom_column' => 2,
         'manage_media_columns' => 2,
-        'password_reset' => 2,
+        // Make sure not to set 'password_reset' higher than 1. The password is the second argument. We don't want to
+        // log it in the Telemetry data.
+        'password_reset' => 1,
         'personal_options_update' => 1,
         'profile_personal_options' => 1,
         'profile_update' => 3,
@@ -250,7 +252,9 @@ class Listener extends AbstractSingleton
         'wpmu_new_user' => 1,
         'user_register' => 2,
         'welcome_panel' => 0,
-        'wp_authenticate' => 1, // Make sure not to log the second argument, which is the password.
+        // Make sure not to set 'wp_authenticate' higher than 1. The password is the second argument. We don't want to
+        // log it in the Telemetry data.
+        'wp_authenticate' => 1,
         'wp_login' => 2,
         'wp_logout' => 1,
         // Advanced actions
@@ -391,8 +395,9 @@ class Listener extends AbstractSingleton
                 'object' => self::objectRepresentation($arg),
                 'array' => 'Array(' . count($arg) . ')',
                 'boolean' => $arg ? 'true' : 'false',
+                'resource' => 'resource(' . get_resource_type($arg) . ': ' . get_resource_id($arg) . ')',
                 'NULL' => 'null',
-                default => (string)$arg,
+                default => (string)$arg, // All other types can be cast to a string.
             };
         }, $args);
         return $action . ': ' . implode(', ', $args);
@@ -456,6 +461,12 @@ class Listener extends AbstractSingleton
      */
     protected static function objectRepresentation(object $object): string
     {
+        if ($object instanceof \UnitEnum) {
+            return 'enum(' . $object::class . '::' . $object->name . ')';
+        }
+        if ($object instanceof \Closure) {
+            return 'closure';
+        }
         $class = get_class($object);
         if (!property_exists($object, 'id')) {
             return 'object(' . $class . ')';

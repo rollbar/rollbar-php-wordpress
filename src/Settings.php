@@ -438,6 +438,8 @@ final class Settings extends AbstractSingleton
 
         // Don't store default values in the database, so future updates to default values in the SDK get propagated.
         foreach ($settings as $setting_name => $setting_value) {
+            // Loose comparison to allow for boolean values to be set to 0 or 1 and integers to be strings, which is how
+            // they are posted via HTTP.
             if ($setting_value == Plugin::getInstance()->settingsInstance()->getDefaultOption($setting_name)) {
                 unset($settings[$setting_name]);
             }
@@ -579,12 +581,15 @@ final class Settings extends AbstractSingleton
                 esc_attr(trim($options['server_side_access_token'])) :
                 '',
             'client_side_access_token' => (!empty($options['client_side_access_token'])) ?
-                trim($options['client_side_access_token']) :
+                esc_attr(trim($options['client_side_access_token'])) :
                 '',
             'included_errno' => (!empty($options['included_errno'])) ?
                 esc_attr(trim($options['included_errno'])) :
                 self::getDefaultOption('included_errno'),
         ];
+
+        // Filter out options that are not in the list of options.
+        $options = array_intersect_key($options, array_flip(self::listOptions()));
 
         foreach (self::listOptions() as $option) {
             // 'access_token' and 'enabled' are different in WordPress plugin

@@ -111,23 +111,14 @@ The plugin provides a number of filters that allow you to customize the behavior
 
 ### `apply_filters('rollbar_api_admin_permission', bool $value, string $route, WP_REST_Request $request)`
 
-Filter to allow or deny access to a Rollbar route in the WordPress REST API used in the WordPress Admin.
+Filter to allow or deny access to a Rollbar route in the WordPress REST API used in the WordPress Admin. Generally,
+this should be the same as the `rollbar_user_can_view_admin` filter.
 
 **Parameters**
 
 * `bool $value` - The initial value. Defaults is `true` for admin users, `false` for non-admin users.
 * `string $route` - The route being accessed.
 * `WP_REST_Request $request` - The REST request object.
-
-### `apply_filters('rollbar_disable_admin', bool $disable)`
-
-Filter to disable the admin settings page of the plugin.
-
-This filter cannot override the `ROLLBAR_DISABLE_ADMIN` constant.
-
-**Parameters**
-
-* `bool $disable` - `true` to disable the admin settings page, `false` to enable it.
 
 ### `apply_filters('rollbar_js_config', array $config)`
 
@@ -173,6 +164,16 @@ select the action on the settings page, or add it to the list of actions using t
 
 * `array<string, callable(string, mixed...):string> $handlers` - An associative array where the keys are action names 
   and the values are the custom event handler.
+
+### `apply_filters('rollbar_user_can_view_admin', bool $disable)`
+
+Filter to enable / disable the admin settings page of the plugin for the current user.
+
+This filter cannot override the `ROLLBAR_DISABLE_ADMIN` constant.
+
+**Parameters**
+
+* `bool $allow` - `true` to enable the admin settings page, `false` to disable it.
 
 ### Telemetry
 

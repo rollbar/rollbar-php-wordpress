@@ -18,6 +18,7 @@ defined('ABSPATH') || exit;
     </form>
 </div>
 <form action="<?= esc_url(admin_url('admin-post.php')); ?>" method="post">
+    <?= wp_nonce_field('rollbar_wp_restore_defaults'); ?>
     <input type="hidden" name="action" value="rollbar_wp_restore_defaults"/>
     <button
             type="submit"

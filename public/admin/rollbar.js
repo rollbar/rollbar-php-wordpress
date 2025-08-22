@@ -71,15 +71,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const testMessageContainer = document.getElementById('rollbar_test_message_container');
 
     /**
+     * Escapes HTML characters in the string.
+     *
+     * @param {string} str The string to escape.
+     * @returns {string}
+     */
+    const escapeHtml = (str) => {
+        return new Option(str).innerHTML;
+    };
+
+    /**
+     * Escapes HTML characters in the string for use in an attribute.
+     *
+     * @param {string} str The string to escape.
+     * @returns {string}
+     */
+    const escapeHtmlAttr = (str) => {
+        return ('' + str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    };
+
+    /**
      * Returns a formatted notice message HTML Node.
      *
      * @param {string} type    The notice type class.
-     * @param {string} message The notice message.
+     * @param {string} message The notice message. The message should be escaped before being passed in.
      * @returns {ChildNode}
      */
     const makeNotice = (type, message) => {
         const el = document.createElement('div');
-        el.innerHTML = `<div class="notice ${type} is-dismissible">${message}</div>`;
+        el.innerHTML = `<div class="notice ${escapeHtmlAttr(type)} is-dismissible">${message}</div>`;
         return el.firstChild;
     };
 
@@ -114,8 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     'notice-error',
                     `<p><strong>PHP Test:</strong> There was a problem accessing Rollbar service.</p>
                               <ul>
-                                  <li>Code:<code>${data.code}</code></li>
-                                  <li>Message:<code>${data.message}</code></li>
+                                  <li>Code:<code>${escapeHtml(data.code)}</code></li>
+                                  <li>Message:<code>${escapeHtml(data.message)}</code></li>
                               </ul>`,
                 ));
             })
@@ -174,26 +199,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Depending on the plugin status prior to loading the page, the Rollbar object may not exist. So we fetch it.
-        if (window.Rollbar === undefined) {
-
-            fetch(rollbarSettings.plugin_url + "public/js/rollbar.snippet.js")
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    eval(data);
-                    sendTestJsMessage(clientSideAccessToken, environment);
-                })
-                .catch(() => {
-                    jsFailNotice();
-                });
-        } else {
-            // This is inside an "else" since the fetch is async.
+        if (window.Rollbar !== undefined) {
             sendTestJsMessage(clientSideAccessToken, environment);
+            return;
         }
+        // If the Rollbar object doesn't exist, we need to load and configure it.
+        window._rollbarConfig = {
+            accessToken: clientSideAccessToken,
+            captureUncaught: true,
+            captureUnhandledRejections: true,
+            payload: {
+                environment: environment
+            }
+        }
+        // Load the Rollbar JS library.
+        const script = document.createElement('script');
+        script.src = rollbarSettings.plugin_url + "public/js/rollbar.snippet.js";
+        let mainRollbarScript = document.querySelector('script[src$="rollbar.min.js"]');
+
+        // Wait for both Rollbar JS libraries to load before sending the test message.
+        script.addEventListener('load', () => {
+            if (window.Rollbar !== undefined) {
+                sendTestJsMessage(clientSideAccessToken, environment);
+                return;
+            }
+            document.querySelector('script[src$="rollbar.min.js"]')?.addEventListener('load', () => {
+                sendTestJsMessage(clientSideAccessToken, environment);
+            });
+        });
+
+        // Handle error loading either the snippet or main Rollbar JS library.
+        window.addEventListener('error', (e) => {
+            if (e.target === script || e.target === mainRollbarScript) {
+                testMessageContainer.appendChild(makeNotice(
+                    'notice-error',
+                    `<p><strong>JS Test:</strong> There was an error loading the Rollbar JS library.</p>`,
+                ));
+            }
+        }, true);
+
+        document.body.appendChild(script);
     };
 
     // Send Test Message

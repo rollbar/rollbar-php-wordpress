@@ -81,10 +81,10 @@ class PluginTest extends BaseTestCase
      */
     public function testHideAdmin(): void
     {
-        add_action('rollbar_disable_admin', '__return_false');
-        self::assertFalse(Plugin::hideAdmin());
-        add_action('rollbar_disable_admin', '__return_true');
-        self::assertTrue(Plugin::hideAdmin());
+        add_action('rollbar_user_can_view_admin', '__return_false');
+        self::assertFalse(Plugin::userCanViewAdmin());
+        add_action('rollbar_user_can_view_admin', '__return_true');
+        self::assertTrue(Plugin::userCanViewAdmin());
     }
 
     public function testGetAssetUrl(): void

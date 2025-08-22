@@ -116,7 +116,7 @@ Yes. It's actually the recommended method of installation.
 * Added support for `ROLLBAR_CLIENT_ACCESS_TOKEN` constant or environment variable to set the client access token.
 * Added support for `WP_PROXY_BYPASS_HOSTS`, `WP_PROXY_USERNAME`, and `WP_PROXY_PASSWORD` for better proxy management.
 * Added `rollbar_api_admin_permission` filter to allow custom authorization of the admin API.
-* Added `rollbar_disable_admin` filter to allow custom disabling of the admin page.
+* Added `rollbar_user_can_view_admin` filter to allow custom disabling of the admin page.
 * Added `rollbar_php_config` filter to allow more exact control over Rollbar PHP configurations.
 * Added `rollbar_telemetry_actions` filter to allow control of which actions are logged via telemetry.
 * Added `rollbar_telemetry_custom_handlers` filter to allow custom control over what is logged in telemetry messages.

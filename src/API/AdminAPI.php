@@ -83,8 +83,8 @@ class AdminAPI extends AbstractSingleton
         $plugin = Plugin::getInstance();
 
         try {
-            $plugin->initPhpLogging();
-            $response = Rollbar::report(
+            $plugin->initPhpLogging(ignoreEnabledSetting: true);
+            $rollbarResponse = Rollbar::report(
                 Level::INFO,
                 'Test message from Rollbar WordPress plugin using PHP: ' .
                 'integration with WordPress successful',
@@ -92,22 +92,23 @@ class AdminAPI extends AbstractSingleton
         } catch (Throwable $exception) {
             return new WP_REST_Response(
                 [
-                    'message' => $exception->getMessage(),
+                    'code' => 500,
                     'success' => false,
+                    // Send the exception message to the client to the admin user so they can debug the issue.
+                    'message' => $exception->getMessage(),
                 ],
                 500,
             );
         }
 
-        $info = $response->getInfo();
-
         $response = [
-            'code' => $response->getStatus(),
-            'success' => true,
+            'code' => $rollbarResponse->getStatus(),
+            'success' => $rollbarResponse->getStatus() === 200,
+            'message' => '',
         ];
-        if (is_array($info)) {
-            $response = array_merge($response, $info);
-        } else {
+
+        $info = $rollbarResponse->getInfo();
+        if (is_string($info)) {
             $response['message'] = $info;
         }
 

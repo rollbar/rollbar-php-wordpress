@@ -16,7 +16,7 @@ defined('ABSPATH') || exit;
     name="<?= esc_attr($input->getName()) ?>"
     id="<?= esc_attr($input->getId()) ?>"
     data-setting="<?= esc_attr($input->getId()) ?>"
-    value="<?= $input->getValue() ?>"
+    value="<?= esc_attr($input->getValue()) ?>"
     <?= disabled($input->isDisabled()) ?>
     <?= $input->getHelpText() ? 'aria-describedby="' . esc_attr($input->getId()) . '-help"' : '' ?>
     <?= $input->serializeAttributes() ?>

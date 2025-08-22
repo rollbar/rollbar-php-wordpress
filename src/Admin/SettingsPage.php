@@ -39,7 +39,7 @@ final class SettingsPage extends AbstractSingleton
      */
     protected function __construct()
     {
-        if (Plugin::hideAdmin()) {
+        if (!Plugin::userCanViewAdmin()) {
             return;
         }
         $this->hooks();
@@ -283,6 +283,9 @@ final class SettingsPage extends AbstractSingleton
      */
     public static function restoreDefaultsAction(): void
     {
+        if (!check_admin_referer('rollbar_wp_restore_defaults')) {
+            return;
+        }
         Settings::getInstance()->restoreDefaults();
 
         FlashMessages::addMessage(
@@ -290,5 +293,6 @@ final class SettingsPage extends AbstractSingleton
         );
 
         wp_redirect(admin_url('/options-general.php?page=rollbar_wp'));
+        exit();
     }
 }

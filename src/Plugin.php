@@ -6,6 +6,7 @@ use Exception;
 use Rollbar\Rollbar;
 use Rollbar\RollbarJsHelper;
 use Rollbar\WordPress\Admin\FlashMessages;
+use Rollbar\WordPress\Admin\SettingsPage;
 use Rollbar\WordPress\API\AdminAPI;
 use Rollbar\WordPress\Lib\AbstractSingleton;
 use Rollbar\WordPress\Settings\SettingType;
@@ -68,12 +69,22 @@ final class Plugin extends AbstractSingleton
      */
     protected function postInit(): void
     {
-        // Set up admin views and API.
-        AdminAPI::getInstance();
         // Set up the telemetry listener.
         if ($this->getSetting('enable_telemetry_listener')) {
             $this->listener = Listener::getInstance();
         }
+    }
+
+    /**
+     * Handles the 'init' action hook.
+     *
+     * @return void
+     */
+    public function onInit(): void
+    {
+        // Set up admin views and API.
+        SettingsPage::getInstance();
+        AdminAPI::getInstance();
     }
 
     /**
@@ -115,21 +126,21 @@ final class Plugin extends AbstractSingleton
      * @return bool
      * @since 3.0.0
      */
-    public static function hideAdmin(): bool
+    public static function userCanViewAdmin(): bool
     {
         if (self::disabledAdmin()) {
             return false;
         }
 
         /**
-         * Filter to disable the admin settings page of the plugin.
+         * Filter to enable / disable the admin settings page of the plugin for the current user.
          *
          * This filter cannot override the `ROLLBAR_DISABLE_ADMIN` constant.
          *
-         * @param bool $disable `true` to disable the admin settings page, `false` to enable it.
+         * @param bool $allow `true` to enable the admin settings page, `false` to disable it.
          * @since 3.0.0
          */
-        return apply_filters('rollbar_disable_admin', !current_user_can('manage_options')) === true;
+        return apply_filters('rollbar_user_can_view_admin', current_user_can('manage_options')) === true;
     }
 
     /**
@@ -192,6 +203,7 @@ final class Plugin extends AbstractSingleton
      */
     private function hooks(): void
     {
+        add_action('init', $this->onInit(...));
         add_action('wp_head', $this->initJsLogging(...));
         add_action('admin_head', $this->initJsLogging(...));
     }
@@ -242,12 +254,14 @@ final class Plugin extends AbstractSingleton
      * Sets up the Rollbar PHP error handler if PHP logging is enabled.
      * Handles configuration errors by displaying appropriate error messages.
      *
+     * @param bool $ignoreEnabledSetting If true, the plugin will not check the 'php_logging_enabled' setting first.
+     *
      * @return void
      */
-    public function initPhpLogging(): void
+    public function initPhpLogging(bool $ignoreEnabledSetting = false): void
     {
         // Return if logging is not enabled
-        if (0 === $this->getSetting('php_logging_enabled')) {
+        if (!$ignoreEnabledSetting && false === $this->getSetting('php_logging_enabled')) {
             return;
         }
 
@@ -321,15 +335,15 @@ final class Plugin extends AbstractSingleton
     public function initJsLogging(): void
     {
         // Return if logging is not enabled
-        if ($this->getSetting('js_logging_enabled') === 0) {
+        if (false === $this->getSetting('js_logging_enabled')) {
             return;
         }
 
         // Return if access token is not set
-        if ($this->getSetting('client_side_access_token') == '') {
+        if (empty($this->getSetting('client_side_access_token'))) {
             FlashMessages::addMessage(
                 message: 'Rollbar is misconfigured. Please, fix your configuration here: <a href="'
-                . admin_url('/options-general.php?page=rollbar_wp') . '">',
+                . admin_url('/options-general.php?page=rollbar_wp') . '">Rollbar Settings</a>.',
                 type: 'error',
             );
             return;
@@ -352,7 +366,7 @@ final class Plugin extends AbstractSingleton
     {
         $config = [
             'accessToken' => $this->getSetting('client_side_access_token'),
-          'captureUncaught' => true,
+            'captureUncaught' => true,
             'payload' => [
                 'environment' => $this->getSetting('environment'),
             ],
