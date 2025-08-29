@@ -154,6 +154,7 @@ class UI
         ?>
         <form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
             <input type="hidden" name="action" value="rollbar_wp_restore_defaults" />
+            <?php wp_nonce_field('rollbar_wp_restore_defaults', 'rollbar_wp_restore_defaults_nonce'); ?>
             <input 
                 type="submit" 
                 class="button button-secondary"
@@ -224,7 +225,7 @@ class UI
 
         $output = 
             '<p><code>WP_ENV</code> environment variable: <code>' . $env . '</code></p>' .
-            '<p><small><strong>Rollbar for Wordpress honors the WP_ENV environment variable.</strong> ' .
+            '<p><small><strong>Rollbar for WordPress honors the WP_ENV environment variable.</strong> ' .
             'If the <code>environment</code> setting is not specified here, it will take ' .
             'precendence over the default value.</strong></small></p>';
         

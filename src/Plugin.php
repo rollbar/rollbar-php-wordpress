@@ -169,16 +169,26 @@ class Plugin {
                 array(
                     'methods' => 'POST',
                     'callback' => '\Rollbar\Wordpress\Plugin::testPhpLogging',
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function() {
+                        // Check if user is logged in and has manage_options capability
+                        return is_user_logged_in() && current_user_can('manage_options');
+                    },
                     'args' => array(
                         'server_side_access_token' => array(
-                            'required' => true
+                            'required' => true,
+                            'sanitize_callback' => 'sanitize_text_field'
                         ),
                         'environment' => array(
-                            'required' => true
+                            'required' => true,
+                            'sanitize_callback' => 'sanitize_text_field'
                         ),
                         'logging_level' => array(
-                            'required' => true
+                            'required' => true,
+                            'sanitize_callback' => 'absint'
+                        ),
+                        'nonce' => array(
+                            'required' => true,
+                            'sanitize_callback' => 'sanitize_text_field'
                         )
                     )
                 )
@@ -187,6 +197,23 @@ class Plugin {
     }
     
     public static function testPhpLogging(\WP_REST_Request $request) {
+        
+        // Verify nonce for CSRF protection
+        $nonce = $request->get_param('nonce');
+        if (!$nonce || !wp_verify_nonce($nonce, 'rollbar_wp_test_logging')) {
+            return new \WP_REST_Response(
+                array('message' => 'Security check failed. Please try again.'),
+                403
+            );
+        }
+        
+        // Additional security check - ensure we're in admin context
+        if (!is_admin()) {
+            return new \WP_REST_Response(
+                array('message' => 'Invalid request context.'),
+                403
+            );
+        }
         
         $plugin = self::instance();
         
@@ -205,14 +232,14 @@ class Plugin {
             if ( is_callable( '\Rollbar\Rollbar::report' ) ){
                 $response = \Rollbar\Rollbar::report(
                     Level::INFO,
-                    "Test message from Rollbar Wordpress plugin using PHP: ".
-                    "integration with Wordpress successful"
+                    "Test message from Rollbar WordPress plugin using PHP: ".
+                    "integration with WordPress successful"
                 );
             } else {
                 $response = \Rollbar\Rollbar::log(
                     Level::INFO,
-                    "Test message from Rollbar Wordpress plugin using PHP: ".
-                    "integration with Wordpress successful"
+                    "Test message from Rollbar WordPress plugin using PHP: ".
+                    "integration with WordPress successful"
                 );
             }
 

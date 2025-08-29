@@ -96,6 +96,9 @@
                     )
                 },
                 logThroughPhp = function(config) {
+                    // Add nonce for CSRF protection
+                    config.nonce = RollbarWordpress.nonce;
+                    
                     jQuery.post(
                         "/index.php?rest_route=/rollbar/v1/test-php-logging",
                         config,
@@ -147,8 +150,8 @@
                     Rollbar.configure(_rollbarConfig);
                                 
                     Rollbar.info(
-                        "Test message from Rollbar Wordpress plugin using JS: "+
-                        "integration with Wordpress successful",
+                        "Test message from Rollbar WordPress plugin using JS: "+
+                        "integration with WordPress successful",
                         function(error, data) {
                             if (error) {
                                 jsFailNotice();

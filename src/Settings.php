@@ -51,6 +51,7 @@ class Settings
                 array(
 					// This is used to load the rollbar snippet, assume the php8 version is more recent. 
                     'plugin_url' => \plugin_dir_url(__FILE__) . "../php8/",
+                    'nonce' => \wp_create_nonce('rollbar_wp_test_logging'),
                 )
             );
             
@@ -73,6 +74,9 @@ class Settings
         \add_action('admin_post_rollbar_wp_restore_defaults', array(get_called_class(), 'restoreDefaultsAction'));
         
         \add_action('pre_update_option_rollbar_wp', array(get_called_class(), 'preUpdate'));
+        
+        // Add nonce verification for settings form
+        \add_action('admin_init', array(get_called_class(), 'verifySettingsNonce'));
     }
 
     function addAdminMenu()
@@ -90,8 +94,9 @@ class Settings
     function addAdminMenuLink($links)
     {
         $args = array('page' => 'rollbar_wp');
+        $nonce = wp_create_nonce('rollbar_wp_admin_link');
 
-        $links['settings'] = '<a href="'.admin_url( 'options-general.php?'.http_build_query( $args ) ).'">'.__('Settings', 'rollbar').'</a>';
+        $links['settings'] = '<a href="'.admin_url( 'options-general.php?'.http_build_query( $args ) ).'&_wpnonce='.$nonce.'">'.__('Settings', 'rollbar').'</a>';
 
         return $links;
     }
@@ -280,12 +285,21 @@ class Settings
 
     function optionsPage()
     {
+        // Check user capabilities
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'rollbar-wp'));
+        }
+        
+        // Verify nonce if provided (for admin menu link)
+        if (isset($_GET['_wpnonce']) && !wp_verify_nonce($_GET['_wpnonce'], 'rollbar_wp_admin_link')) {
+            wp_die(__('Security check failed. Please try again.', 'rollbar-wp'));
+        }
         
         UI::flashMessage();
         
         ?>
         <form action='options.php' method='post'>
-
+            <?php wp_nonce_field('rollbar_wp_settings', 'rollbar_wp_settings_nonce'); ?>
             <h2 class="rollbar-header">
                 <img class="logo" alt="Rollbar" src="//cdn.rollbar.com/static/img/rollbar-icon-white.svg?ts=1548370449v8" width="auto" height="24">
                 Rollbar for WordPress
@@ -340,6 +354,22 @@ class Settings
     
     public static function restoreDefaultsAction()
     {
+        // Verify nonce for CSRF protection
+        if (!isset($_POST['rollbar_wp_restore_defaults_nonce']) || 
+            !wp_verify_nonce($_POST['rollbar_wp_restore_defaults_nonce'], 'rollbar_wp_restore_defaults')) {
+            wp_die(__('Security check failed. Please try again.', 'rollbar-wp'));
+        }
+        
+        // Verify user capabilities
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'rollbar-wp'));
+        }
+        
+        // Additional security check - ensure we're in admin context
+        if (!is_admin()) {
+            wp_die(__('Invalid request context.', 'rollbar-wp'));
+        }
+        
         \Rollbar\Wordpress\Plugin::instance()->restoreDefaults();
         
         self::flashRedirect(
@@ -350,6 +380,11 @@ class Settings
     
     public static function flashRedirect($type, $message)
     {
+        // Security check - ensure user has proper capabilities
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'rollbar-wp'));
+        }
+        
         self::flashMessage($type, $message);
         
         wp_redirect(admin_url('/options-general.php?page=rollbar_wp'));
@@ -363,6 +398,11 @@ class Settings
         if( ! is_admin() || ! session_id() || wp_doing_cron() ) {
             return;
         }
+        
+        // Additional security check - ensure user has proper capabilities
+        if (!current_user_can('manage_options')) {
+            return;
+        }
 
         $_SESSION['rollbar_wp_flash_message'] = array(
             "type" => $type,
@@ -372,6 +412,10 @@ class Settings
     
     public static function preUpdate($settings)
     {
+        // Additional security check - ensure we're in admin context
+        if (!is_admin() || !current_user_can('manage_options')) {
+            return false;
+        }
         
         // Empty checkboxes don't get propagated into the $_POST at all. Fill out
         // missing boolean settings with default values.
@@ -414,6 +458,14 @@ class Settings
         }
         
         return $settings;
+    }
+
+    public static function verifySettingsNonce()
+    {
+        if (isset($_POST['rollbar_wp_settings_nonce']) && 
+            !wp_verify_nonce($_POST['rollbar_wp_settings_nonce'], 'rollbar_wp_settings')) {
+            wp_die(__('Security check failed. Please try again.', 'rollbar-wp'));
+        }
     }
 }
 
