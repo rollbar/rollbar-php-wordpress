@@ -12,7 +12,7 @@ class PluginTest extends BaseTestCase {
     
     private $subject;
     
-    public function setUp()
+    public function set_up() 
     {
         $this->subject = \Rollbar\Wordpress\Plugin::instance();
     }
@@ -44,10 +44,15 @@ class PluginTest extends BaseTestCase {
         $dataBuilder = $logger->getDataBuilder();
         
         $errorWrapper = $dataBuilder->generateErrorWrapper(
-            $errorLevel, $errorMsg, "", ""
+            $errorLevel, $errorMsg, "", 0
         );
         
-        $response = $logger->log(Level::ERROR, $errorWrapper);
+        // Log stopped returning the resposne in v4
+        if ( method_exists( $logger, 'report' )){
+            $response = $logger->report( Level::ERROR, $errorWrapper );
+        } else {
+            $response = $logger->log(Level::ERROR, $errorWrapper);
+        }
         
         if ($shouldIgnore) {
             $this->assertEquals("Ignored", $response->getInfo());
@@ -56,8 +61,24 @@ class PluginTest extends BaseTestCase {
         }
         
     }
+
+    /**
+     * Tests to ensure bools are properly converted from "1" and "0" strings
+     * 
+     * @ticket https://github.com/rollbar/rollbar-php-wordpress/issues/119
+     */
+    public function testSendMessageTraceBool(){
+        $plugin = $this->subject;
+
+        $plugin->setting( 'send_message_trace', '1' );
+        $plugin->setting( 'report_suppressed', '0' );
+        $data = $plugin->buildPHPConfig();
+
+        $this->assertTrue( $data['send_message_trace'] );
+        $this->assertFalse( $data['report_suppressed'] );
+    }
     
-    public function loggingLevelTestDataProvider()
+    public static function loggingLevelTestDataProvider()
     {
         return array(
                 array(

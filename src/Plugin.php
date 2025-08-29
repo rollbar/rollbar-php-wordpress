@@ -9,7 +9,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 class Plugin {
     
-    const VERSION = "2.6.2";
+    const VERSION = "2.7.1";
     
     private $config;
     
@@ -52,6 +52,11 @@ class Plugin {
     private function initSettings() {
         Settings::init();
     }
+
+    public static function getEnvironment()
+    {
+        return ( getenv('WP_ENV') ?: ( defined( 'WP_ENV' ) ? WP_ENV : null ) );
+    }
     
     /**
      * Fetch settings provided in Admin -> Tools -> Rollbar
@@ -68,7 +73,7 @@ class Plugin {
         
         if (!isset($options['environment']) || empty($options['environment'])) {
             
-            if ($wpEnv = getenv('WP_ENV')) {
+            if ($wpEnv = $this->getEnvironment()) {
                 $options['environment'] = $wpEnv;
             }
             
@@ -195,12 +200,22 @@ class Plugin {
         
         try {
             $plugin->initPhpLogging();
-            
-            $response = \Rollbar\Rollbar::log(
-                Level::INFO,
-                "Test message from Rollbar Wordpress plugin using PHP: ".
-                "integration with Wordpress successful"
-            );
+
+            // in the PHP8 version, $response will be null if we use `log` instead of `report`
+            if ( is_callable( '\Rollbar\Rollbar::report' ) ){
+                $response = \Rollbar\Rollbar::report(
+                    Level::INFO,
+                    "Test message from Rollbar Wordpress plugin using PHP: ".
+                    "integration with Wordpress successful"
+                );
+            } else {
+                $response = \Rollbar\Rollbar::log(
+                    Level::INFO,
+                    "Test message from Rollbar Wordpress plugin using PHP: ".
+                    "integration with Wordpress successful"
+                );
+            }
+
             
         } catch( \Exception $exception ) {
             
@@ -333,6 +348,13 @@ class Plugin {
             if (isset($config[$setting]) && $config[$setting] === 'false') {
                 $config[$setting] = false;
             } else if (isset($config[$setting]) && $config[$setting] === 'true') {
+                $config[$setting] = true;
+            }
+
+            // also handle 1 and 0 as booleans
+            else if (isset($config[$setting]) && $config[$setting] === '0') {
+                $config[$setting] = false;
+            } else if (isset($config[$setting]) && $config[$setting] === '1') {
                 $config[$setting] = true;
             }
         }

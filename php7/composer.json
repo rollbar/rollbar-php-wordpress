@@ -1,0 +1,48 @@
+{
+    "name": "rollbar/rollbar-php-wordpress",
+    "description": "WordPress plugin for Rollbar",
+    "type": "wordpress-plugin",
+    "require": {
+        "rollbar/rollbar": "1.8.1",
+        "michelf/php-markdown": "1.9.1"
+    },
+    "license": "GNU GPL",
+    "authors": [
+        {
+            "name": "flowdee",
+            "email": "hello@flowdee.de"
+        },
+        {
+            "name": "Artur Moczulski",
+            "email": "artur.moczulski@gmail.com"
+        },
+        {
+          "name": "Rollbar, Inc.",
+          "email": "support@rollbar.com",
+          "role": "Developer"
+        }
+    ],
+
+    "support": {
+        "email": "support@rollbar.com"
+    },
+
+    "autoload": {
+      "psr-4": {
+        "Rollbar\\Wordpress\\": "../src/",
+        "Rollbar\\Wordpress\\Tests\\": "../tests/"
+      }
+    },
+    "extra": {
+        "scripts-description": {
+            "test": "Run all tests. Make sure that local Mysql server is running."
+        }
+     },
+    "scripts": {
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "rollbar-php-wordpress",
+  "version": "2.7.1",
+  "description": "Official Rollbar full-stack error tracking for WordPress supported by Rollbar, Inc.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "wp-env": "wp-env",
+    "pretest": "npm-run-all start",
+    "test": "npm-run-all test:php",
+    "tests-composer-update": "npm run wp-env -- run --env-cwd='wp-content/plugins/rollbar-php-wordpress' tests-cli composer update",
+    "tests-composer-install": "npm run wp-env -- run --env-cwd='wp-content/plugins/rollbar-php-wordpress' tests-cli composer install --no-interaction",
+    "pretest:php": "npm-run-all tests-composer-update tests-composer-install",
+    "test:php": "npm run wp-env -- run tests-wordpress /var/www/html/wp-content/plugins/rollbar-php-wordpress/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/rollbar-php-wordpress/phpunit.xml.dist",
+    "start": "npm run wp-env start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rollbar/rollbar-php-wordpress.git"
+  },
+  "author": "Rollbar, Inc.",
+  "license": "GPL-2.0+",
+  "bugs": {
+    "url": "https://github.com/rollbar/rollbar-php-wordpress/issues"
+  },
+  "homepage": "https://github.com/rollbar/rollbar-php-wordpress#readme",
+  "dependencies": {
+    "@wordpress/env": "^8.3.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
