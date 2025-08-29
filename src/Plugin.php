@@ -271,7 +271,7 @@ final class Plugin extends AbstractSingleton
         } catch (Exception $exception) {
             FlashMessages::addMessage(
                 message: 'Rollbar is misconfigured. Please, fix your configuration here: <a href="'
-                . admin_url('/options-general.php?page=rollbar_wp') . '">',
+                . admin_url('/options-general.php?page=rollbar_wp') . '">Rollbar Settings</a>.',
                 type: 'error',
             );
         }
