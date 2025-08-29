@@ -208,7 +208,8 @@ final class SettingsPage extends AbstractSingleton
             handle: 'rollbar-admin-js',
             object_name: 'rollbarSettings',
             l10n: [
-                'nonce' => wp_create_nonce('wp_rest'),
+                'nonce' => wp_create_nonce('rollbar_wp_api_test_logging'),
+                'rest_nonce' => wp_create_nonce('wp_rest'),
                 'rest_root' => esc_url_raw(rest_url()),
                 'plugin_url' => plugin_dir_url(ROLLBAR_PLUGIN_FILE),
             ],

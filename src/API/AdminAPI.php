@@ -6,6 +6,7 @@ use Rollbar\Payload\Level as Level;
 use Rollbar\Rollbar;
 use Rollbar\WordPress\Lib\AbstractSingleton;
 use Rollbar\WordPress\Plugin;
+use Rollbar\WordPress\Settings;
 use Throwable;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -61,11 +62,25 @@ class AdminAPI extends AbstractSingleton
                      */
                     return apply_filters(
                         hook_name: 'rollbar_api_admin_permission',
-                        value: current_user_can('manage_options'),
+                        value: is_user_logged_in() && current_user_can('manage_options'),
                         route: 'test-php-logging',
                         request: $request,
                     );
                 },
+                'args' => [
+                    'server_side_access_token' => [
+                        'required' => true,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'environment' => [
+                        'required' => true,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'included_errno' => [
+                        'required' => true,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                ],
             ],
         );
     }
@@ -80,7 +95,19 @@ class AdminAPI extends AbstractSingleton
      */
     public function handleTestPhpLogging(WP_REST_Request $request): WP_REST_Response
     {
+
+        // Get the settings from the request.
+        $settings = [];
+        foreach (Settings::listOptions() as $option) {
+            $settings[$option] = $request->get_param($option);
+        }
+
+        $settings = Settings::normalizeSettings($settings);
+
         $plugin = Plugin::getInstance();
+        foreach ($settings as $key => $value) {
+            $plugin->setSetting($key, $value);
+        }
 
         try {
             $plugin->initPhpLogging(ignoreEnabledSetting: true);

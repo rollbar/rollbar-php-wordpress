@@ -77,24 +77,35 @@ class SettingsTest extends BaseTestCase
     }
 
     /**
-     * @testWith [true, true]
-     * @testWith [false, false]
-     * @testWith ['false', false]
-     * @testWith ['true', true]
-     * @testWith ['1', true]
-     * @testWith ['0', false]
-     * @testWith ['', false]
-     * @testWith ['yes', true]
-     * @testWith ['no', false]
-     * @testWith ['on', true]
-     * @testWith ['off', false]
-     * @testWith [0, false]
-     * @testWith [1, true]
-     * @testWith [-1, true]
+     * @dataProvider toBooleanProvider
      */
-    public function testToBoolean($value, $expected): void
+    public function testToBoolean(mixed $value, bool $expected): void
     {
         self::assertSame($expected, Settings::toBoolean($value));
+    }
+
+    /**
+     * @dataProvider toIntegerProvider
+     */
+    public function testToInteger(mixed $value, int $expected): void
+    {
+        self::assertSame($expected, Settings::toInteger($value));
+    }
+
+    /**
+     * @dataProvider toStringProvider
+     */
+    public function testToString(mixed $value, string $expected): void
+    {
+        self::assertSame($expected, Settings::toString($value));
+    }
+
+    /**
+     * @dataProvider toArrayStringProvider
+     */
+    public function testToStringArray(mixed $value, array $expected): void
+    {
+        self::assertSame($expected, Settings::toStringArray($value));
     }
 
     /**
@@ -130,6 +141,49 @@ class SettingsTest extends BaseTestCase
         $ref->setStaticPropertyValue('instances', []);
 
         self::assertSame('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', Settings::getInstance()->get('server_side_access_token'));
+    }
+
+    public function testNormalizeSettings(): void
+    {
+        $actual = Settings::normalizeSettings([
+            'php_logging_enabled' => 'true',
+            'js_logging_enabled' => 'false',
+            'environment' => 'production',
+            'included_errno' => '256',
+            'max_items' => '100',
+            'endpoint' => 'https://api.rollbar.com/api/1/',
+            'telemetry_hooks' => [
+                'init',
+            ],
+        ]);
+
+        self::assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys(
+            [
+                'php_logging_enabled' => true,
+                'js_logging_enabled' => false,
+                'server_side_access_token' => '',
+                'client_side_access_token' => '',
+                'included_errno' => '256',
+                'environment' => 'production',
+                'endpoint' => 'https://api.rollbar.com/api/1/',
+                'max_items' => 100,
+                'telemetry_hooks' => [
+                    'init',
+                ],
+            ],
+            $actual,
+            [
+                'php_logging_enabled',
+                'js_logging_enabled',
+                'server_side_access_token',
+                'client_side_access_token',
+                'included_errno',
+                'environment',
+                'max_items',
+                'endpoint',
+                'telemetry_hooks',
+            ],
+        );
     }
 
     /**
@@ -198,6 +252,63 @@ class SettingsTest extends BaseTestCase
                     'include_items_in_telemetry' => true,
                 ],
             ],
+        ];
+    }
+
+    public static function toBooleanProvider(): array
+    {
+        return [
+            [true, true],
+            [false, false],
+            ['false', false],
+            ['true', true],
+            ['1', true],
+            ['0', false],
+            ['', false],
+            ['yes', true],
+            ['no', false],
+            ['on', true],
+            ['off', false],
+            [0, false],
+            [1, true],
+            [-1, true],
+        ];
+    }
+
+    public static function toIntegerProvider(): array
+    {
+        return [
+            [true, 1],
+            [false, 0],
+            [42, 42],
+            [42.9, 42],
+            ["42.9", 42],
+            [null, 0],
+            [['foo'], 0],
+        ];
+    }
+
+    public static function toStringProvider(): array
+    {
+        return [
+            [true, 'true'],
+            [false, 'false'],
+            ['foo', 'foo'],
+            [42.9, '42.9'],
+            [null, ''],
+            [['bar'], ''],
+            [42, '42'],
+        ];
+    }
+
+    public static function toArrayStringProvider(): array
+    {
+        return [
+            [[], []],
+            ['foo', ['foo']],
+            [['foo'], ['foo']],
+            [['foo', 'bar'], ['foo', 'bar']],
+            [[true, 42], ['true', '42']],
         ];
     }
 }

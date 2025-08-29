@@ -3,6 +3,7 @@
  *
  * @var {{
  *    nonce: string,
+ *    rest_nonce: string,
  *    rest_root: string,
  *    plugin_url: string,
  * }} rollbarSettings Declared in SettingsPage::enqueueAdminScripts().
@@ -109,6 +110,38 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
+     * Collects the Rollbar settings from the form.
+     *
+     * @returns {object} The Rollbar settings.
+     */
+    const collectSettings = () => {
+        const settings = {};
+        document.querySelectorAll('.wrap form [name^="rollbar_wp"]').forEach(input => {
+            const isArray = input.name.endsWith('[]');
+            let name = input.name.slice(input.name.indexOf('[') + 1, input.name.indexOf(']'));
+            let value = input.value;
+            if (input.type === 'checkbox' && !isArray) {
+                value = input.checked;
+            }
+            if (input.type === 'number') {
+                value = parseInt(value);
+            }
+            if (isArray) {
+                if (!(name in settings)) {
+                    settings[name] = [];
+                }
+                if (input.type === 'checkbox' && !input.checked) {
+                    return;
+                }
+                settings[name].push(value);
+                return;
+            }
+            settings[name] = value;
+        });
+        return settings;
+    };
+
+    /**
      * Request a test of the Rollbar config in PHP via the REST API.
      */
     const testPhpLogging = () => {
@@ -122,8 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`${rollbarSettings.rest_root}rollbar/v1/test-php-logging`, {
             method: 'POST',
             headers: {
-                'X-WP-Nonce': rollbarSettings.nonce,
+                'X-WP-Nonce': rollbarSettings.rest_nonce,
+                'Content-Type': 'application/json',
             },
+            body: JSON.stringify(collectSettings()),
         }).then(response => {
             response.json().then(data => {
                 if (data.success) {

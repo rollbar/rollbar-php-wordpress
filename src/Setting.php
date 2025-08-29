@@ -85,6 +85,23 @@ final class Setting
     }
 
     /**
+     * Coerces the value of the setting to the appropriate type.
+     *
+     * @param mixed $value The value to be coerced.
+     * @return mixed The coerced value.
+     */
+    public function coerceValue(mixed $value): mixed
+    {
+        return match ($this->type) {
+            SettingType::Boolean => Settings::toBoolean($value),
+            SettingType::CheckBox => Settings::toStringArray($value),
+            SettingType::Integer => Settings::toInteger($value),
+            SettingType::Select, SettingType::Text => Settings::toString($value),
+            SettingType::Skip => null,
+        };
+    }
+
+    /**
      * Creates and returns the input object otherwise null if it should be skipped.
      *
      * @return InputInterface|null

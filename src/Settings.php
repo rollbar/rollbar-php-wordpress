@@ -81,10 +81,22 @@ final class Settings extends AbstractSingleton
                 default: false,
                 section: 'rollbar_wp_general',
             ),
+            'server_side_access_token' => new Setting(
+                id: 'server_side_access_token',
+                type: SettingType::Text,
+                default: '',
+                section: 'rollbar_wp_general',
+            ),
             'js_logging_enabled' => new Setting(
                 id: 'js_logging_enabled',
                 type: SettingType::Boolean,
                 default: false,
+                section: 'rollbar_wp_general',
+            ),
+            'client_side_access_token' => new Setting(
+                id: 'client_side_access_token',
+                type: SettingType::Text,
+                default: '',
                 section: 'rollbar_wp_general',
             ),
             'environment' => new Setting(
@@ -505,7 +517,7 @@ final class Settings extends AbstractSingleton
      *
      * @return void
      */
-    public function restoreDefaults()
+    public function restoreDefaults(): void
     {
         $settings = [];
 
@@ -550,6 +562,69 @@ final class Settings extends AbstractSingleton
     }
 
     /**
+     * Returns a reasonable integer from a given value.
+     *
+     * @param mixed $value The value to convert to an integer.
+     * @return int
+     */
+    public static function toInteger(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value;
+        }
+        if (is_string($value)) {
+            return intval($value);
+        }
+        if (is_bool($value)) {
+            return $value ? 1 : 0;
+        }
+        if (is_numeric($value)) {
+            return intval($value);
+        }
+        return 0;
+    }
+
+    /**
+     * Returns a reasonable string from a given value.
+     *
+     * @param mixed $value The value to convert to a string.
+     * @return string
+     */
+    public static function toString(mixed $value): string
+    {
+        if (is_string($value)) {
+            return $value;
+        }
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+        if (is_int($value)) {
+            return (string) $value;
+        }
+        if (is_numeric($value)) {
+            return (string) $value;
+        }
+        return '';
+    }
+
+    /**
+     * Returns an array of strings from a given value.
+     *
+     * @param mixed $value The value to convert to an array of strings.
+     * @return string[]
+     */
+    public static function toStringArray(mixed $value): array
+    {
+        if (is_array($value)) {
+            return array_map(fn($v) => self::toString($v), $value);
+        }
+        if (is_string($value)) {
+            return [$value];
+        }
+        return [];
+    }
+
+    /**
      * Fetch settings provided in Admin -> Tools -> Rollbar
      *
      * @returns void
@@ -574,6 +649,17 @@ final class Settings extends AbstractSingleton
             $options['client_side_access_token'] ?? null,
         );
 
+        $this->settings = self::normalizeSettings($options);
+    }
+
+    /**
+     * Normalizes the settings array to ensure all required fields are set and properly formatted.
+     *
+     * @param array<string, mixed> $options
+     * @return array
+     */
+    public static function normalizeSettings(array $options): array
+    {
         $settings = [
             'php_logging_enabled' => (!empty($options['php_logging_enabled'])) ? 1 : 0,
             'js_logging_enabled' => (!empty($options['js_logging_enabled'])) ? 1 : 0,
@@ -591,20 +677,20 @@ final class Settings extends AbstractSingleton
         // Filter out options that are not in the list of options.
         $options = array_intersect_key($options, array_flip(self::listOptions()));
 
-        foreach (self::listOptions() as $option) {
+        foreach (self::settings() as $key => $setting) {
             // 'access_token' and 'enabled' are different in WordPress plugin
             // look for 'server_side_access_token' and 'php_logging_enabled' above
-            if (in_array($option, ['access_token', 'enabled'])) {
+            if (in_array($key, ['access_token', 'enabled'])) {
                 continue;
             }
 
-            if (!isset($options[$option])) {
-                $value = $this->getDefaultOption($option);
-            } else {
-                $value = $options[$option];
+            $value = $options[$key] ?? ($setting?->default ?? null);
+            if ($setting !== null) {
+                $value = $setting->coerceValue($value);
+            } elseif (!isset($options[$key])) {
+                continue;
             }
-
-            $settings[$option] = $value;
+            $settings[$key] = $value;
         }
 
         /**
@@ -614,7 +700,7 @@ final class Settings extends AbstractSingleton
          * @since 3.0.0
          *
          */
-        $this->settings = apply_filters('rollbar_plugin_settings', $settings);
+        return apply_filters('rollbar_plugin_settings', $settings);
     }
 
     /**
