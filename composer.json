@@ -14,7 +14,7 @@
         "wp-coding-standards/wpcs": "^2.2",
         "sirbrillig/phpcs-variable-analysis": "^2.8"
     },
-    "license": "GNU GPL",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Rollbar, Inc.",
