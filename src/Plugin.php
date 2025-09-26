@@ -309,7 +309,7 @@ final class Plugin extends AbstractSingleton
             $config[$setting] = Settings::toBoolean($value);
         }
 
-        if ($config['enable_person_reporting'] && !empty($config['person_fn']) && !empty($config['person'])) {
+        if ($config['enable_person_reporting'] && empty($config['person_fn']) && empty($config['person'])) {
             $config['person_fn'] = Settings::getPersonFunction(...);
         }
 
