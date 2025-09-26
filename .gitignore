@@ -31,15 +31,8 @@ dwsync.xml
 .komodotools
 
 # PHPUnit
-phpunit.xml
 phpunit.env
 .phpunit.result.cache
-
-# PHPCS
-phpcs.xml
-
-# Composer
-composer.lock
 
 # Folders to ignore
 .hg
@@ -48,5 +41,5 @@ composer.lock
 intermediate
 .idea
 cache
-deploy.sh
 node_modules
+vendor
