@@ -41,7 +41,8 @@
     "extra": {
         "scripts-description": {
             "test": "Run all tests. Wrapper around npm run test"
-        }
+        },
+        "installer-name": "rollbar"
     },
     "scripts": {
         "test": [
