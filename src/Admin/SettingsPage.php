@@ -261,7 +261,7 @@ final class SettingsPage extends AbstractSingleton
         Template::print(ROLLBAR_PLUGIN_DIR . '/templates/admin/settings-section-header.php', [
             'id' => 'rollbar_settings_telemetry_header',
             'title' => 'Telemetry Settings',
-            'description' => '<p>See the <a href="https://docs.rollbar.com/docs/php-telemetry" target="_blank">Rollbar'
+            'description' => '<p>See the <a href="https://docs.rollbar.com/docs/php-telemetry" target="_blank">Rollbar '
             . 'telemetry documentation</a> and <a href="https://developer.wordpress.org/apis/hooks/action-reference/" '
             . 'target="_blank">WordPress action reference</a> for more details on these settings.</p>',
         ]);

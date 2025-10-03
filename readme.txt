@@ -1,37 +1,34 @@
 === Rollbar ===
-Contributors: arturmoczulski, jorbin
+Contributors: arturmoczulski, jorbin, danielmorell
 Tags: rollbar, full stack, error, tracking, error tracking, error reporting, reporting, debug
-Requires at least: 4.4.0
-Tested up to: 6.3.1
-Stable tag: 2.7.1
+Requires at least: 6.5.0
+Tested up to: 6.8
+Requires PHP: 8.1
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Official Rollbar full-stack error tracking for WordPress supported by Rollbar, Inc.
 
 == Description ==
+
 Rollbar collects errors that happen in your application, notifies you, and analyzes them so you can debug and fix them.
-
 This plugin integrates Rollbar into your WordPress installation.
-
-Find out [how Rollbar can help you decrease development and maintenance costs](https://rollbar.com/features/).
-
-See [real companies improving their development workflow thanks to Rollbar](https://rollbar.com/customers/).
 
 = Features =
 
-*   PHP & Javascript error logging
-*   Define an environment for each single WordPress installation or Multisite blog
-*   Specify your desired logging level
+*   PHP & JavaScript error logging.
+*   Define an environment for each single WordPress installation or Multisite blog.
+*   Specify your desired logging level.
 *   Regular updates and improvements!
 
-> <strong>Please note</strong><br>
-> In order to use this plugin, a [Rollbar account](https://rollbar.com/) is required.
+**Please note:**
+In order to use this plugin, a [Rollbar account](https://rollbar.com/) is required.
 
 = Support =
 
-* Browse [issue tracker](https://github.com/rollbar/rollbar-php-wordpress/issues) on GitHub and report new issues
-* If you run into any issues, please email us at [support@rollbar.com](mailto:support@rollbar.com)
+* Browse [issue tracker](https://github.com/rollbar/rollbar-php-wordpress/issues) on GitHub and report new issues.
+* If you run into any issues, please email us at [support@rollbar.com](mailto:support@rollbar.com).
 * For bug reports, please [open an issue on GitHub](https://github.com/rollbar/rollbar-php-wordpress/issues/new).
 
 = You like it? =
@@ -46,62 +43,110 @@ This plugin is a community-driven contribution. All rights reserved to [Rollbar]
 
 The installation and configuration of the plugin are as simple as it can be.
 
-= Through [WordPress Plugin directory](https://wordpress.org/plugins/rollbar/) =
+= Through WordPress Plugin directory =
 
-The easiest way to install the plugin is from the WordPress Plugin directory. If you have an existing WordPress installation and you want to add Rollbar:
+The easiest way to install the plugin is from the WordPress Plugin directory. If you have an existing WordPress
+installation, and you want to add Rollbar:
 
 1. In your WordPress administration panel go to `Plugins` → `Add New`.
 2. Search for "Rollbar" and find `Rollbar` by Rollbar in the search results.
 3. Click `Install Now` next to the `Rollbar` plugin.
-4. In `Plugins` → `Installed plugins` find `Rollbar` and click `activate` underneath.
-5. Log into your [Rollbar account dashboard](https://rollbar.com/login/).
-6. Go to `Settings` → `Project Access Tokens`.
-7. Copy the token value under `post_client_item` and `post_server_item`.
-8. Navigate to `Tools` → `Rollbar`.
-9. Enable `PHP error logging` and/or `Javascript error logging` depending on your needs.
-10. Paste the tokens you copied in step 7 in `Access Token` section.
-11. Provide the name of your environment in `Environment`. By default, the environment will be taken from `WP_ENV` environment variable if it's set otherwise it's blank. We recommend to fill this out either with `development` or `production`.
-12. Pick a minimum logging level. Only errors at that or higher level will be reported. For reference: [PHP Manual: Predefined Error Constants](http://php.net/manual/en/errorfunc.constants.php).
-13. Click `Save Changes`.
-
-**Warning**: This installation method might not be suitable for complex WordPress projects. The plugin installed this way will be self-contained and include all of the required dependencies for itself and `rollbar/rollbar-php` library. In complex projects, this might lead to version conflicts between dependencies and other plugins/packages. If this is an issue in your project, we recommend the "Advanced" installation method. For more information why this might be important for you, read [Using Composer with WordPress]().
-
-= Through [wpackagist](https://wpackagist.org/) (if you manage your project with Composer) *recommended* =
-
-This is a recommended way to install Rollbar plugin for advanced projects. This way ensures the plugin and all of its' dependencies are managed by Composer.
-
-1. If your WordPress project is not managed with Composer yet, we suggest looking into upgrading your WordPress: [Using Composer with WordPress]().
-2. In your `composer.json` add `wpackagist-plugin/rollbar` to your `require` section, i.e.:
-```
-  "require": {
-    "php": ">=8.1",
-    ...,
-    "wpackagist-plugin/rollbar": "*"
-  }
-```
-3. Issue command `composer install` in the root directory of your WordPress project.
 4. In `Plugins` → `Installed plugins` find `Rollbar` and click `Activate` underneath.
-5. Log into your [Rollbar account dashboard](https://rollbar.com/login/).
-6. Go to `Settings` → `Project Access Tokens`.
-7. Copy the token value under `post_client_item` and `post_server_item`.
-8. Navigate to `Tools` → `Rollbar`.
-9. Enable `PHP error logging` and/or `Javascript error logging` depending on your needs.
-10. Paste the tokens you copied in step 7 in `Access Token` section.
-11. Provide the name of your environment in `Environment`. By default, the environment will be taken from `WP_ENV` environment variable if it's set otherwise it's blank.
-12. Pick a minimum logging level. Only errors at that or higher level will be reported. For reference: [PHP Manual: Predefined Error Constants](http://php.net/manual/en/errorfunc.constants.php).
-13. Click `Save Changes`.
+
+**Warning**: This installation method might not be suitable for complex WordPress projects. The plugin installed this
+way will be self-contained and include all of the required dependencies for itself and the `rollbar/rollbar-php`
+library. In complex projects, this might lead to version conflicts between dependencies and other plugins/packages. If
+this is an issue in your project, we recommend the "Packagist" installation method.
+
+= Through Packagist =
+
+*Note: this only works if your WordPress project is managed with Composer.
+Read [Using Composer with WordPress](https://roots.io/using-composer-with-wordpress/) for more details.*
+
+This is a recommended way to install the Rollbar plugin for advanced projects. This way ensures the plugin and all of
+its dependencies are managed by Composer.
+
+You can install the plugin by running the following command in the root directory of your WordPress project:
+
+```txt
+composer require rollbar/rollbar-php-wordpress:^3.0
+```
+
+= Through WPackagist =
+
+*Note: if your WordPress project is managed with Composer, we strongly recommend installing the plugin through
+Packagist instead.*
+
+*Installing the plugin from wpackagist.org instead of packagist.org will result in the plugin being managed by
+Composer. However, the downside is that it's dependencies will not be managed by composer. Instead they will be packaged
+in the plugin's `vendor` directory not in your project's `vendor` directory. This has the potential to cause name
+collisions if other plugins or your project use different versions of the same dependencies.*
+
+To install the plugin from wpackagist.org run the following steps command in the root directory of your WordPress
+project:
+
+```txt
+composer require wpackagist-plugin/rollbar
+```
+
+= Configuration =
+
+The plugin can be configured in the WordPress Admin or programmatically.
+
+**WordPress Admin**
+
+The plugin provides a settings page in the WordPress Admin that allows you to configure the plugin. This settings page
+can be disabled by setting the `ROLLBAR_DISABLE_ADMIN` constant to `true` in your `wp-config.php` file.
+
+1. In `Plugins` → `Installed plugins` find `Rollbar` and click `Activate` underneath.
+2. Log into your [Rollbar account dashboard](https://rollbar.com/login/):
+    1. Go to `Settings` → `Project Access Tokens`.
+    2. Copy the token value under `post_client_item` and `post_server_item`.
+3. In WordPress, navigate to `Settings` → `Rollbar`:
+    1. Enable `PHP error logging` and/or `Javascript error logging` depending on your needs.
+    2. Paste the tokens you copied in step 7 in `Access Token` section.
+    3. Provide the name of your environment in `Environment`. By default, the environment will be taken from `WP_ENV`
+       environment variable if it's set otherwise it's blank. We recommend to fill this out either with `development` or
+       `production`.
+    4. Pick a minimum logging level. Only errors at that or higher level will be reported. For
+       reference: [PHP Manual: Predefined Error Constants](http://php.net/manual/en/errorfunc.constants.php).
+    5. Click `Save Changes`.
+
+**Programmatic Configuration**
+
+The plugin can also be configured programmatically. This is useful if you want to configure the plugin in a more
+advanced way or if you want to disable the admin settings page.
+
+```php
+// wp-config.php
+
+// Configure the plugin.
+define( 'ROLLBAR_SETTINGS', [
+    'php_logging_enabled' => true,
+    'server_side_access_token' => '<your token>',
+    'js_logging_enabled' => true,
+    'client_side_access_token' => '<your client token>',
+    'environment' => 'development',
+    'included_errno' => E_ERROR,
+    'enable_person_reporting' => true,
+] );
+
+// Optional: disable the admin settings page so the plugin is configured only programmatically.
+define( 'ROLLBAR_DISABLE_ADMIN', true );
+```
 
 == Frequently Asked Questions ==
 
 = Multisite supported? =
-Yes of course. Additionally, you can assign different environments to each of your blogs.
+Yes, of course. Additionally, you can assign different environments to each of your blogs.
 
 = I have a complex WordPress project and use composer for managing dependencies. Is your plugin composer friendly? =
-Yes. It's actually the recommended method of installation.
+Yes. It's actually the recommended method of installation. You can install the `rollbar/rollbar-php-wordpress` package
+using composer.
 
 == Screenshots ==
 
-1. Settings page
+1. Settings page.
 
 == Changelog ==
 
@@ -110,6 +155,7 @@ Yes. It's actually the recommended method of installation.
 * Removed support for PHP 8.0 and below.
 * Updated and improved the settings page.
 * Updated the Rollbar core PHP SDK to v4.1.
+* Updated the Rollbar core JavaScript SDK to v2.26.
 * Added support for telemetry and added auto-instrumentation.
 * Added support for `ROLLBAR_DISABLE_ADMIN` to remove the plugin settings page from the admin.
 * Added support for `ROLLBAR_SETTINGS` to configure the plugin without the admin page.
@@ -188,7 +234,7 @@ Yes. It's actually the recommended method of installation.
 * Updated rollbar-php dependency to v1.5.1
 
 = Version 2.4.0 (17th May 2018) =
-* Added capture_ip, capture_email and capture_username to the config options.
+* Added capture_ip, capture_email, and capture_username to the config options.
 * Fixed populating config options from the database to the plugin for boolean values.
 * Updated rollbar-php dependency to v1.5.0
 
@@ -307,7 +353,7 @@ Updated admin test results to show a skipped test as a success. Fixed new sessio
 * Updated rollbar-php dependency to v1.5.1
 
 = Version 2.4.0 (5th April 2018) =
-* Added capture_ip, capture_email and capture_username to the config options.
+* Added capture_ip, capture_email, and capture_username to the config options.
 * Fixed populating config options from the database to the plugin for boolean values.
 * Updated rollbar-php dependency to v1.5.0
 
