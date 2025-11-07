@@ -22,6 +22,7 @@ class SettingTest extends BaseTestCase
         self::assertSame('Foo', $setting->label);
         self::assertSame('Foo help text', $setting->helpText);
         self::assertSame(1, $setting->default);
+        self::assertSame(false, $setting->alwaysSave);
     }
 
     public function testGetTitle(): void

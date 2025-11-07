@@ -68,7 +68,7 @@ its dependencies are managed by Composer.
 
 You can install the plugin by running the following command in the root directory of your WordPress project:
 
-```txt
+```
 composer require rollbar/rollbar-php-wordpress:^3.0
 ```
 
@@ -85,7 +85,7 @@ collisions if other plugins or your project use different versions of the same d
 To install the plugin from wpackagist.org run the following steps command in the root directory of your WordPress
 project:
 
-```txt
+```
 composer require wpackagist-plugin/rollbar
 ```
 
@@ -150,7 +150,10 @@ using composer.
 
 == Changelog ==
 
-= Version 3.0.0 (pending)
+= Version 3.1.0 (?) =
+* Fixed settings values not being saved correctly when they match the default.
+
+= Version 3.0.0 (October 17 2025) =
 * Fixed CSRF vulnerability.
 * Removed support for PHP 8.0 and below.
 * Updated and improved the settings page.
@@ -168,10 +171,10 @@ using composer.
 * Added `rollbar_telemetry_custom_handlers` filter to allow custom control over what is logged in telemetry messages.
 * Added 'framework' details with the WordPress version to the item payload.
 
-= Version 2.7.1 (September 13 2023)
+= Version 2.7.1 (September 13 2023) =
 * Fix issue that could lead to fatal error with some settings (https://github.com/rollbar/rollbar-php-wordpress/pull/120)
 
-= Version 2.7.0 (September 11 2023)
+= Version 2.7.0 (September 11 2023) =
 * Updated PHP Dependencies including loading seperate dependencies for PHP7 and PHP8. (https://github.com/rollbar/rollbar-php-wordpress/pull/114)
 * Updated node development dependencies (https://github.com/rollbar/rollbar-php-wordpress/pull/115)
 

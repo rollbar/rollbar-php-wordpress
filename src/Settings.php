@@ -80,24 +80,28 @@ final class Settings extends AbstractSingleton
                 type: SettingType::Boolean,
                 default: false,
                 section: 'rollbar_wp_general',
+                alwaysSave: true,
             ),
             'server_side_access_token' => new Setting(
                 id: 'server_side_access_token',
                 type: SettingType::Text,
                 default: '',
                 section: 'rollbar_wp_general',
+                alwaysSave: true,
             ),
             'js_logging_enabled' => new Setting(
                 id: 'js_logging_enabled',
                 type: SettingType::Boolean,
                 default: false,
                 section: 'rollbar_wp_general',
+                alwaysSave: true,
             ),
             'client_side_access_token' => new Setting(
                 id: 'client_side_access_token',
                 type: SettingType::Text,
                 default: '',
                 section: 'rollbar_wp_general',
+                alwaysSave: true,
             ),
             'environment' => new Setting(
                 id: 'environment',
@@ -108,6 +112,7 @@ final class Settings extends AbstractSingleton
                 'precendence over the default value.</strong></p>',
                 default: 'production',
                 section: 'rollbar_wp_general',
+                alwaysSave: true,
             ),
             'included_errno' => new Setting(
                 id: 'included_errno',
@@ -127,6 +132,7 @@ final class Settings extends AbstractSingleton
                     E_ALL => 'Absolutely everything (E_ALL)',
                 ],
                 section: 'rollbar_wp_general',
+                alwaysSave: true,
             ),
             'agent_log_location' => new Setting(
                 id: 'agent_log_location',
@@ -450,6 +456,11 @@ final class Settings extends AbstractSingleton
 
         // Don't store default values in the database, so future updates to default values in the SDK get propagated.
         foreach ($settings as $setting_name => $setting_value) {
+            // Always save settings that are marked as alwaysSave.
+            $settingConfig = self::settings()[$setting_name] ?? null;
+            if (null !== $settingConfig && $settingConfig->alwaysSave) {
+                continue;
+            }
             // Loose comparison to allow for boolean values to be set to 0 or 1 and integers to be strings, which is how
             // they are posted via HTTP.
             if ($setting_value == Plugin::getInstance()->settingsInstance()->getDefaultOption($setting_name)) {

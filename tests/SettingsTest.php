@@ -196,7 +196,10 @@ class SettingsTest extends BaseTestCase
     {
         return [
             [
-                'expected' => [],
+                'expected' => [
+                    'php_logging_enabled' => false,
+                    'js_logging_enabled' => false,
+                ],
                 'data' => [
                     'allow_exec' => true,
                     'capture_error_stacktraces' => true,
@@ -210,6 +213,7 @@ class SettingsTest extends BaseTestCase
             [
                 'expected' => [
                     'php_logging_enabled' => true,
+                    'js_logging_enabled' => false,
                     'enabled' => true,
                 ],
                 'data' => [
@@ -226,6 +230,8 @@ class SettingsTest extends BaseTestCase
             [
                 'expected' => [
                     'allow_exec' => false,
+                    'php_logging_enabled' => false,
+                    'js_logging_enabled' => false,
                 ],
                 'data' => [
                     'allow_exec' => false,
@@ -240,6 +246,8 @@ class SettingsTest extends BaseTestCase
             [
                 'expected' => [
                     'use_error_reporting' => true,
+                    'php_logging_enabled' => false,
+                    'js_logging_enabled' => false,
                 ],
                 'data' => [
                     'use_error_reporting' => true,

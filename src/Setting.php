@@ -45,6 +45,7 @@ final class Setting
         readonly public array $options = [],
         readonly public string $section = 'rollbar_wp_advanced',
         readonly public array $inputArgs = [],
+        readonly public bool $alwaysSave = false,
     ) {
         $this->input = $this->createInput();
     }
