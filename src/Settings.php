@@ -512,7 +512,7 @@ final class Settings extends AbstractSingleton
      */
     public function saveSettings(array $settings): void
     {
-        $option = get_option('rollbar_wp');
+        $option = get_option(self::OPTIONS_KEY);
 
         $option = array_merge($option, $settings);
 
@@ -520,7 +520,7 @@ final class Settings extends AbstractSingleton
             $this->settings[$setting] = $value;
         }
 
-        update_option('rollbar_wp', $option);
+        update_option(self::OPTIONS_KEY, $option);
     }
 
     /**
@@ -689,8 +689,8 @@ final class Settings extends AbstractSingleton
         $options = array_intersect_key($options, array_flip(self::listOptions()));
 
         foreach (self::settings() as $key => $setting) {
-            // 'access_token' and 'enabled' are different in WordPress plugin
-            // look for 'server_side_access_token' and 'php_logging_enabled' above
+            // 'access_token' and 'enabled' are different in the WordPress plugin look for 'server_side_access_token'
+            // and 'php_logging_enabled' above.
             if (in_array($key, ['access_token', 'enabled'])) {
                 continue;
             }
