@@ -193,6 +193,17 @@ Filters the Rollbar JavaScript configuration.
 
 * `array $config` - The Rollbar JavaScript configuration array.
 
+#### `apply_filters('rollbar_js_nonce', string|null $nonce)`
+
+Filter that can be used to set the nonce attribute value of the frontend JS script.
+
+**Since: 3.1.0**
+
+**Parameters**
+
+* `string|null $nonce` - The nonce value to be used in the script tag. If `null` the attribute is excluded. Default 
+  is `null`.
+
 #### `apply_filters('rollbar_plugin_settings', array $settings)`
 
 Filters the Rollbar plugin settings.

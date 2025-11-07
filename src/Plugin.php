@@ -349,7 +349,16 @@ final class Plugin extends AbstractSingleton
             return;
         }
 
-        $rollbarJs = RollbarJsHelper::buildJs($this->buildJsConfig());
+        /**
+         * Filter that can be used to set the nonce attribute value of the frontend JS script.
+         *
+         * @param string|null $nonce The nonce value to be used in the script tag. If `null` the attribute is excluded.
+         *                           Default is `null`.
+         * @since 3.1.0
+         */
+        $nonce = apply_filters('rollbar_js_nonce', null);
+
+        $rollbarJs = RollbarJsHelper::buildJs($this->buildJsConfig(), nonce: $nonce);
 
         echo $rollbarJs;
     }
