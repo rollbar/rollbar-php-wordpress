@@ -13,7 +13,7 @@
         "phpcompatibility/php-compatibility": "^9.3",
         "wp-coding-standards/wpcs": "^2.2",
         "sirbrillig/phpcs-variable-analysis": "^2.8",
-        "humbug/php-scoper": "^0.18.18"
+        "humbug/php-scoper": "^0.18.7"
     },
     "license": "GPL-2.0-or-later",
     "authors": [
