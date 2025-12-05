@@ -346,13 +346,13 @@ This is only for contributors with committer access:
     1. Fetch the latest contents of Subversion repo with `svn update`.
     2. Remove the contents of `trunk/` with `rm -Rf trunk`.
     3. Update the contents of `trunk/` with a clone of the tag you created in step 2.
-        1. `git clone https://github.com/rollbar/rollbar-php-wordpress.git trunk`
-        2. `cd trunk && git checkout tags/v[version number] && cd ..`
-        3. `rm -Rf trunk/.git`
+        1. Checkout the tag you created in step 2: `git checkout tags/v[version number]`
+        2. Run `bin/build.sh` to build the plugin.
+        3. Copy the contents of `dist/` to `trunk/`
         4. `svn add trunk --force`
-        5. `svn commit -m"Sync with GitHub repo"`
+        5. `svn commit -m "Sync with GitHub repo"`
     4. Create the Subversion tag:
-       `svn copy https://plugins.svn.wordpress.org/rollbar/trunk https://plugins.svn.wordpress.org/rollbar/tags/[version number] -m"Tag [version number]"`.
+       `svn copy https://plugins.svn.wordpress.org/rollbar/trunk https://plugins.svn.wordpress.org/rollbar/tags/[version number] -m" Tag [version number]"`.
        Notice the version number in Subversion doesn't include the "v" prefix.
 
 ## Disclaimer

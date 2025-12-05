@@ -152,6 +152,9 @@ using composer.
 
 = Version 3.1.0 (?) =
 * Fixed settings values not being saved correctly when they match the default.
+* Added `rollbar_js_nonce` filter to allow customizing the nonce used in the Rollbar JS snippet.
+* Moved vendored files into a scoped namespace.
+* Updated the Rollbar core PHP SDK to v4.2.
 
 = Version 3.0.0 (October 17 2025) =
 * Fixed CSRF vulnerability.
