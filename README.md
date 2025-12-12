@@ -352,7 +352,7 @@ This is only for contributors with committer access:
         4. `svn add trunk --force`
         5. `svn commit -m "Sync with GitHub repo"`
     4. Create the Subversion tag:
-       `svn copy https://plugins.svn.wordpress.org/rollbar/trunk https://plugins.svn.wordpress.org/rollbar/tags/[version number] -m" Tag [version number]"`.
+       `svn copy https://plugins.svn.wordpress.org/rollbar/trunk https://plugins.svn.wordpress.org/rollbar/tags/[version number] -m "Tag [version number]"`.
        Notice the version number in Subversion doesn't include the "v" prefix.
 
 ## Disclaimer
