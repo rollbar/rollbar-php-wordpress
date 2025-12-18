@@ -4,7 +4,7 @@ Tags: rollbar, full stack, error, tracking, error tracking, error reporting, rep
 Requires at least: 6.5.0
 Tested up to: 6.9
 Requires PHP: 8.1
-Stable tag: 3.0.0
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,7 +150,7 @@ using composer.
 
 == Changelog ==
 
-= Version 3.1.0 (?) =
+= Version 3.1.0 (December 18th 2025) =
 * Fixed settings values not being saved correctly when they match the default.
 * Added `rollbar_js_nonce` filter to allow customizing the nonce used in the Rollbar JS snippet.
 * Added support for WordPress 6.9.
