@@ -18,6 +18,7 @@ This plugin integrates Rollbar into your WordPress installation.
 #### Table of Contents
 
 1. [Installation](#installation)
+    1. [Requirements](#requirements)
     1. [Through WordPress Plugin directory](#through-wordpress-plugin-directory)
     2. [Through Packagist](#through-packagist-recommended-new)
     3. [Through WPackagist](#through-wpackagist)
@@ -35,6 +36,13 @@ This plugin integrates Rollbar into your WordPress installation.
 7. [Testing](#testing)
 
 ## Installation
+
+### Requirements
+
+| Plugin Version | PHP Version | WordPress Version | Support       |
+|----------------|-------------|-------------------|---------------|
+| v3             | 8.1 to 8.5  | 6.5 to 6.9        | Full          |
+| v2             | 7.0 to 8.3  | 5.8 to 6.8        | Not Supported |
 
 ### Through [WordPress Plugin directory](https://wordpress.org/plugins/rollbar/)
 
@@ -179,6 +187,8 @@ The plugin provides a number of filters that allow you to customize the behavior
 Filter to allow or deny access to a Rollbar route in the WordPress REST API used in the WordPress Admin. Generally,
 this should be the same as the `rollbar_user_can_view_admin` filter.
 
+**Since: 3.0.0**
+
 **Parameters**
 
 * `bool $value` - The initial value. Defaults is `true` for admin users, `false` for non-admin users.
@@ -216,6 +226,8 @@ Filters the Rollbar plugin settings.
 
 Filters the Rollbar Core SDK PHP configuration.
 
+**Since: 3.0.0**
+
 **Parameters**
 
 * `array $config` - The Rollbar PHP configuration array.
@@ -223,6 +235,8 @@ Filters the Rollbar Core SDK PHP configuration.
 #### `apply_filters('rollbar_telemetry_actions', array<string, int> $actions)`
 
 Filter the list of actions to instrument with Telemetry.
+
+**Since: 3.0.0**
 
 **Parameters**
 
@@ -236,6 +250,8 @@ Filter the list of custom action event handlers for Telemetry.
 Note: The custom action handler will only be called if the action is instrumented with Telemetry. This means you must
 select the action on the settings page, or add it to the list of actions using the `rollbar_telemetry_actions` filter.
 
+**Since: 3.0.0**
+
 **Parameters**
 
 * `array<string, callable(string, mixed...):string> $handlers` - An associative array where the keys are action names
@@ -246,6 +262,8 @@ select the action on the settings page, or add it to the list of actions using t
 Filter to enable / disable the admin settings page of the plugin for the current user.
 
 This filter cannot override the `ROLLBAR_DISABLE_ADMIN` constant.
+
+**Since: 3.0.0**
 
 **Parameters**
 

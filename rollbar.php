@@ -10,7 +10,7 @@
  * Text Domain: rollbar
  * License: Proprietary
  * Requires PHP: 8.1
- * Tested up to: 6.8
+ * Tested up to: 6.9
  * Requires at least: 6.5
  *
  * @package         Rollbar\WordPress

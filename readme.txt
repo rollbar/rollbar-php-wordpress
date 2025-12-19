@@ -2,7 +2,7 @@
 Contributors: arturmoczulski, jorbin, danielmorell
 Tags: rollbar, full stack, error, tracking, error tracking, error reporting, reporting, debug
 Requires at least: 6.5.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 8.1
 Stable tag: 3.0.0
 License: GPLv2 or later
@@ -117,7 +117,7 @@ can be disabled by setting the `ROLLBAR_DISABLE_ADMIN` constant to `true` in you
 The plugin can also be configured programmatically. This is useful if you want to configure the plugin in a more
 advanced way or if you want to disable the admin settings page.
 
-```php
+```
 // wp-config.php
 
 // Configure the plugin.
@@ -153,10 +153,11 @@ using composer.
 = Version 3.1.0 (?) =
 * Fixed settings values not being saved correctly when they match the default.
 * Added `rollbar_js_nonce` filter to allow customizing the nonce used in the Rollbar JS snippet.
+* Added support for WordPress 6.9.
 * Moved vendored files into a scoped namespace.
 * Updated the Rollbar core PHP SDK to v4.2.
 
-= Version 3.0.0 (October 17 2025) =
+= Version 3.0.0 (October 17th 2025) =
 * Fixed CSRF vulnerability.
 * Removed support for PHP 8.0 and below.
 * Updated and improved the settings page.
@@ -174,10 +175,10 @@ using composer.
 * Added `rollbar_telemetry_custom_handlers` filter to allow custom control over what is logged in telemetry messages.
 * Added 'framework' details with the WordPress version to the item payload.
 
-= Version 2.7.1 (September 13 2023) =
+= Version 2.7.1 (September 13th 2023) =
 * Fix issue that could lead to fatal error with some settings (https://github.com/rollbar/rollbar-php-wordpress/pull/120)
 
-= Version 2.7.0 (September 11 2023) =
+= Version 2.7.0 (September 11th 2023) =
 * Updated PHP Dependencies including loading seperate dependencies for PHP7 and PHP8. (https://github.com/rollbar/rollbar-php-wordpress/pull/114)
 * Updated node development dependencies (https://github.com/rollbar/rollbar-php-wordpress/pull/115)
 
