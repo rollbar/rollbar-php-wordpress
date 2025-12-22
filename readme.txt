@@ -150,6 +150,9 @@ using composer.
 
 == Changelog ==
 
+= Version 3.1.1 (December 22nd 2025) =
+* Fixed composer autoload ClassLoader namespace not replaced by PHPScoper in v3.1.0.
+
 = Version 3.1.0 (December 18th 2025) =
 * Fixed settings values not being saved correctly when they match the default.
 * Added `rollbar_js_nonce` filter to allow customizing the nonce used in the Rollbar JS snippet.
