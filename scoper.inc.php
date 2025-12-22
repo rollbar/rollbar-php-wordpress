@@ -50,7 +50,7 @@ return [
             // Fix ClassLoader in string not being prefixed.
             if ($filePath === __DIR__ . '/build/vendor/composer/autoload_real.php') {
                 $content = str_replace(
-                    '(\'Composer\Autoload\ClassLoader\' === $class)',
+                    '(\'Composer\\\\Autoload\\\\ClassLoader\' === $class)',
                     '(\'RollbarWP\Composer\Autoload\ClassLoader\' === $class)',
                     $content,
                 );
