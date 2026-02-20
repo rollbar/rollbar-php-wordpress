@@ -13,6 +13,7 @@
     <file>./mu-plugin</file>
     <file>./src</file>
     <file>./tests</file>
+    <file>./utils</file>
     <file>./rollbar.php</file>
 
     <!-- Show sniff codes in all reports -->

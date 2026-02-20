@@ -1,18 +1,19 @@
 {
-	"core": "WordPress/WordPress",
-	"plugins": [ "." ],
-	"config": {
+    "core": "WordPress/WordPress",
+    "plugins": [ "." ],
+    "config": {
         "WP_ENVIRONMENT_TYPE": "production",
         "WP_ENV": "production",
-		"WP_DEBUG": true,
-		"WP_DEBUG_LOG": true,
-		"WP_DEBUG_DISPLAY": true
-	},
-	"env": {
-		"tests": {
-			"mappings": {
-				"wp-content/plugins/rollbar": "./"
-			}
-		}
-	}
+        "WP_DEBUG": true,
+        "WP_DEBUG_LOG": true,
+        "WP_DEBUG_DISPLAY": true
+    },
+    "env": {
+        "tests": {
+            "mappings": {
+                "wp-content/plugins/rollbar": "./",
+                "wp-content/plugins/conflict": "./tests/conflict"
+            }
+        }
+    }
 }
