@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Conflict
  * Plugin URI: https://github.com/rollbar/rollbar-php-wordpress/tree/master/tests/conflict
