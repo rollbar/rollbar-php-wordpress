@@ -36,7 +36,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Rollbar\\WordPress\\Tests\\": "tests/"
+            "Rollbar\\WordPress\\Tests\\": "tests/",
+            "Rollbar\\WordPress\\BuildUtils\\": "utils/"
         }
     },
     "extra": {

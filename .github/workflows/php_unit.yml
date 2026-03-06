@@ -102,16 +102,27 @@ jobs:
           cp phpcs.xml dist/phpcs.xml
           cp phpunit.xml dist/phpunit.xml
           cp -r tests dist/tests
+          cp -r utils dist/utils
 
       - name: Install Dist Composer Dependencies
         if: matrix.php != '8.5'
         working-directory: dist
         run: composer install --no-interaction --no-progress --no-suggest --optimize-autoloader
 
+      - name: Build Conflict Plugin
+        if: matrix.php != '8.5'
+        working-directory: dist
+        run: npm run build-conflict
+
       - name: Start Dist Docker environment
         if: matrix.php != '8.5'
         working-directory: dist
         run: npm run wp-env start
+
+      - name: Install Conflict Plugin
+        if: matrix.php != '8.5'
+        working-directory: dist
+        run: npm run install-conflict
 
       - name: Log running Dist Docker containers
         if: matrix.php != '8.5'

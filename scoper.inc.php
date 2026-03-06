@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+require_once './utils/NamespaceTokenFixer.php';
+
 $finder = Isolated\Symfony\Component\Finder\Finder::class;
+$fixer = new Rollbar\WordPress\BuildUtils\NamespaceTokenFixer();
 
 return [
     'prefix' => 'RollbarWP',
@@ -46,14 +49,10 @@ return [
         'zend_monitor_custom_event',
     ],
     'patchers' => [
-        static function (string $filePath, string $prefix, string $content): string {
-            // Fix ClassLoader in string not being prefixed.
-            if ($filePath === __DIR__ . '/build/vendor/composer/autoload_real.php') {
-                $content = str_replace(
-                    '(\'Composer\\\\Autoload\\\\ClassLoader\' === $class)',
-                    '(\'RollbarWP\Composer\Autoload\ClassLoader\' === $class)',
-                    $content,
-                );
+        static function (string $filePath, string $prefix, string $content) use ($fixer): string {
+            if ($fixer->fileIsFixable($filePath)) {
+                $fixer->configure($filePath, $content);
+                $content = $fixer->fix();
             }
 
             return $content;
