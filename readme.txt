@@ -4,7 +4,7 @@ Tags: rollbar, full stack, error, tracking, error tracking, error reporting, rep
 Requires at least: 6.5.0
 Tested up to: 6.9
 Requires PHP: 8.1
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,6 +149,11 @@ using composer.
 1. Settings page.
 
 == Changelog ==
+
+= Version 3.1.3 (April 3rd 2026) =
+* Updated Rollbar JS snippet to v3.1.0.
+* Updated Rollbar PHP core SDK to v4.2.1.
+* Updated other dependencies.
 
 = Version 3.1.2 (March 6th 2026) =
 * Fixed namespace strings not prefixed by PHPScoper.

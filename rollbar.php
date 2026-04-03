@@ -4,7 +4,7 @@
  * Plugin Name: Rollbar
  * Plugin URI: https://wordpress.org/plugins/rollbar
  * Description: Rollbar full-stack error tracking for WordPress.
- * Version: 3.1.2
+ * Version: 3.1.3
  * Author: Rollbar
  * Author URI: https://rollbar.com
  * Text Domain: rollbar
