@@ -21,7 +21,7 @@ This plugin integrates Rollbar into your WordPress installation.
     1. [Requirements](#requirements)
     1. [Through WordPress Plugin directory](#through-wordpress-plugin-directory)
     2. [Through Packagist](#through-packagist-recommended-new)
-    3. [Through WPackagist](#through-wpackagist)
+    3. [Through WP Packages](#through-wp-packages)
 2. [Configuration](#configuration)
     1. [WordPress Admin](#wordpress-admin)
     2. [Programmatic Configuration](#programmatic-configuration)
@@ -62,7 +62,7 @@ this is an issue in your project, we recommend the "Packagist" installation meth
 ### Through [Packagist](https://packagist.org/packages/rollbar/rollbar-php-wordpress) *recommended new*
 
 *Note: this only works if your WordPress project is managed with Composer.
-Read [Using Composer with WordPress](https://roots.io/using-composer-with-wordpress/) for more details.*
+Read [Composer + WordPress Resources](https://roots.io/composer-wordpress-resources/) for more details.*
 
 This is a recommended way to install the Rollbar plugin for advanced projects. This way ensures the plugin and all of
 its dependencies are managed by Composer.
@@ -73,21 +73,21 @@ You can install the plugin by running the following command in the root director
 composer require rollbar/rollbar-php-wordpress:^3.0
 ```
 
-### Through [WPackagist](https://wpackagist.org/)
+### Through [WP Packages](https://wp-packages.org/)
 
 *Note: if your WordPress project is managed with Composer, we strongly recommend installing the plugin through
 Packagist instead.*
 
-*Installing the plugin from wpackagist.org instead of packagist.org will result in the plugin being managed by
+*Installing the plugin from WP Packages instead of Packagist will result in the plugin being managed by
 Composer. However, the downside is that it's dependencies will not be managed by composer. Instead they will be packaged 
 in the plugin's `vendor` directory not in your project's `vendor` directory. This has the potential to cause name 
 collisions if other plugins or your project use different versions of the same dependencies.*
 
-To install the plugin from wpackagist.org run the following steps command in the root directory of your WordPress
+To install the plugin from WP Packages run the following steps command in the root directory of your WordPress
 project:
 
 ```txt
-composer require wpackagist-plugin/rollbar
+composer require wp-plugin/rollbar
 ```
 
 ## Configuration
