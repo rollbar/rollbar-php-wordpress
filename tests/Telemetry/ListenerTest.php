@@ -2,6 +2,7 @@
 
 namespace Rollbar\WordPress\Tests\Telemetry;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Rollbar\Rollbar;
 use Rollbar\Telemetry\EventLevel;
 use Rollbar\Telemetry\EventType;
@@ -59,9 +60,7 @@ class ListenerTest extends BaseTestCase
         self::assertTrue(has_action('delete_user'));
     }
 
-    /**
-     * @dataProvider dataProviderConcatExtraArgs
-     */
+    #[DataProvider('dataProviderConcatExtraArgs')]
     public function testConcatExtraArgs(string $action, array $args, string $expected): void
     {
         self::assertSame($expected, Listener::concatExtraArgs($action, ...$args));

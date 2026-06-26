@@ -2,6 +2,9 @@
 
 namespace Rollbar\WordPress\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Rollbar\Payload\Level;
 use Rollbar\Rollbar;
 use Rollbar\WordPress\Plugin;
@@ -53,10 +56,8 @@ class PluginTest extends BaseTestCase
         self::assertEquals($expected, $output->getEnvironment());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testDisableAdmin(): void
     {
         self::assertFalse(Plugin::disabledAdmin());
@@ -64,10 +65,8 @@ class PluginTest extends BaseTestCase
         self::assertTrue(Plugin::disabledAdmin());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testDisableAdmin2(): void
     {
         self::assertFalse(Plugin::disabledAdmin());
@@ -75,10 +74,8 @@ class PluginTest extends BaseTestCase
         self::assertFalse(Plugin::disabledAdmin());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testHideAdmin(): void
     {
         add_action('rollbar_user_can_view_admin', '__return_false');
@@ -92,9 +89,7 @@ class PluginTest extends BaseTestCase
         self::assertStringEndsWith('/wp-content/plugins/rollbar/test.js', Plugin::getAssetUrl('test.js'));
     }
 
-    /**
-     * @dataProvider loggingLevelTestDataProvider
-     */
+    #[DataProvider('loggingLevelTestDataProvider')]
     public function testIncludedErrno(
         $loggingLevel,
         $errorLevel,

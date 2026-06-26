@@ -41,7 +41,7 @@ This plugin integrates Rollbar into your WordPress installation.
 
 | Plugin Version | PHP Version | WordPress Version | Support       |
 |----------------|-------------|-------------------|---------------|
-| v3             | 8.1 to 8.5  | 6.5 to 6.9        | Full          |
+| v3             | 8.2 to 8.5  | 6.6 to 7.0        | Full          |
 | v2             | 7.0 to 8.3  | 5.8 to 6.8        | Not Supported |
 
 ### Through [WordPress Plugin directory](https://wordpress.org/plugins/rollbar/)
