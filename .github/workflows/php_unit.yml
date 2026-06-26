@@ -24,16 +24,15 @@ jobs:
       fail-fast: false
       matrix:
         php:
-          - '8.1'
           - '8.2'
           - '8.3'
           - '8.4'
           - '8.5'
         wordpress:
-          - '6.5'
           - '6.7'
           - '6.8'
           - '6.9'
+          - '7.0'
 
     env:
       WP_ENV_PHP_VERSION: ${{ matrix.php }}
@@ -85,16 +84,12 @@ jobs:
       # ------------------------------------------------ #
 
       - name: Stop Docker environment
-        # Remove this check when https://github.com/humbug/php-scoper/issues/1139 is resolved.
-        if: matrix.php != '8.5'
         run: npm run wp-env stop
 
       - name: Build Plugin
-        if: matrix.php != '8.5'
         run: bin/build.sh
 
       - name: Copy Test Files
-        if: matrix.php != '8.5'
         run: |
           cp .wp-env.json dist/.wp-env.json
           cp package.json dist/package.json
@@ -105,32 +100,26 @@ jobs:
           cp -r utils dist/utils
 
       - name: Install Dist Composer Dependencies
-        if: matrix.php != '8.5'
         working-directory: dist
         run: composer install --no-interaction --no-progress --no-suggest --optimize-autoloader
 
       - name: Build Conflict Plugin
-        if: matrix.php != '8.5'
         working-directory: dist
         run: npm run build-conflict
 
       - name: Start Dist Docker environment
-        if: matrix.php != '8.5'
         working-directory: dist
         run: npm run wp-env start
 
       - name: Install Conflict Plugin
-        if: matrix.php != '8.5'
         working-directory: dist
         run: npm run install-conflict
 
       - name: Log running Dist Docker containers
-        if: matrix.php != '8.5'
         working-directory: dist
         run: docker ps -a
 
       - name: Running Dist unit tests
-        if: matrix.php != '8.5'
         working-directory: dist
         # We don't run phpcs here because the dist files are modified by the build script.
         run: |

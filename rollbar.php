@@ -9,9 +9,9 @@
  * Author URI: https://rollbar.com
  * Text Domain: rollbar
  * License: Proprietary
- * Requires PHP: 8.1
- * Tested up to: 6.9
- * Requires at least: 6.5
+ * Requires PHP: 8.2
+ * Tested up to: 7.0
+ * Requires at least: 6.6
  *
  * @package         Rollbar\WordPress
  * @copyright       Rollbar, Inc.

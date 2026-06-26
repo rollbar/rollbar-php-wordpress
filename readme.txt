@@ -1,9 +1,9 @@
 === Rollbar ===
 Contributors: arturmoczulski, jorbin, danielmorell
 Tags: rollbar, full stack, error, tracking, error tracking, error reporting, reporting, debug
-Requires at least: 6.5.0
-Tested up to: 6.9
-Requires PHP: 8.1
+Requires at least: 6.6.0
+Tested up to: 7.0
+Requires PHP: 8.2
 Stable tag: 3.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -149,6 +149,12 @@ using composer.
 1. Settings page.
 
 == Changelog ==
+
+= Version 3.2.0 =
+* Added support for WordPress 7.0.
+* Removed support for PHP 8.1.
+* Removed support for WordPress 6.6.
+* Updated other dependencies.
 
 = Version 3.1.3 (April 3rd 2026) =
 * Updated Rollbar JS snippet to v3.1.0.
