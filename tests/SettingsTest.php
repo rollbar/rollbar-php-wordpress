@@ -2,6 +2,9 @@
 
 namespace Rollbar\WordPress\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Rollbar\WordPress\Lib\AbstractSingleton;
 use Rollbar\WordPress\Settings;
 use Rollbar\WordPress\Settings\SettingType;
@@ -56,9 +59,7 @@ class SettingsTest extends BaseTestCase
         self::assertTrue($settings->getDefaultOption('capture_error_stacktraces'));
     }
 
-    /**
-     * @dataProvider preUpdateProvider
-     */
+    #[DataProvider('preUpdateProvider')]
     public function testPreUpdate($expected, $data): void
     {
         self::assertEquals(
@@ -76,42 +77,32 @@ class SettingsTest extends BaseTestCase
         self::assertSame('bar', $settings->get('foo'));
     }
 
-    /**
-     * @dataProvider toBooleanProvider
-     */
+    #[DataProvider('toBooleanProvider')]
     public function testToBoolean(mixed $value, bool $expected): void
     {
         self::assertSame($expected, Settings::toBoolean($value));
     }
 
-    /**
-     * @dataProvider toIntegerProvider
-     */
+    #[DataProvider('toIntegerProvider')]
     public function testToInteger(mixed $value, int $expected): void
     {
         self::assertSame($expected, Settings::toInteger($value));
     }
 
-    /**
-     * @dataProvider toStringProvider
-     */
+    #[DataProvider('toStringProvider')]
     public function testToString(mixed $value, string $expected): void
     {
         self::assertSame($expected, Settings::toString($value));
     }
 
-    /**
-     * @dataProvider toArrayStringProvider
-     */
+    #[DataProvider('toArrayStringProvider')]
     public function testToStringArray(mixed $value, array $expected): void
     {
         self::assertSame($expected, Settings::toStringArray($value));
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testRollbarSettingsConstant(): void
     {
         define('ROLLBAR_SETTINGS', [
@@ -125,10 +116,8 @@ class SettingsTest extends BaseTestCase
         self::assertSame(['bar'], Settings::getInstance()->get('scrub_fields'));
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testRollbarSettingsConstantPriority(): void
     {
         define('ROLLBAR_SETTINGS', [
