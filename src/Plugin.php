@@ -24,7 +24,7 @@ defined('ABSPATH') || exit;
  */
 final class Plugin extends AbstractSingleton
 {
-    public const VERSION = '3.1.3';
+    public const VERSION = '3.2.0';
 
     /**
      * Configuration array for Rollbar.
