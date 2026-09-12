@@ -9,6 +9,7 @@
  */
 
 $rollbar_plugin = __DIR__ . '/../plugins/rollbar/rollbar.php';
+$rollbar_plugin = dirname(__DIR__) . '/plugins/rollbar/rollbar.php';
 
 if (!file_exists($rollbar_plugin)) {
     return;
