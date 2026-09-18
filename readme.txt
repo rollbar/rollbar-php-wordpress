@@ -150,6 +150,14 @@ using composer.
 
 == Changelog ==
 
+= Version 3.3.0 (Sep 18th 2026) =
+* Added support for WordPress 7.1.
+* Removed support for WordPress 6.6.
+* Updated MU plugin name to be less verbose.
+* Fixed missing MU plugin ABSPATH security check.
+* Fixed MU plugin path incorrect.
+* Maintenance: Fixed WP env using project directory name for plugin name.
+
 = Version 3.2.0 (June 26th 2026) =
 * Added support for WordPress 7.0.
 * Removed support for PHP 8.1.
