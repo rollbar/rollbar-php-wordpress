@@ -68,9 +68,7 @@ its dependencies are managed by Composer.
 
 You can install the plugin by running the following command in the root directory of your WordPress project:
 
-```
-composer require rollbar/rollbar-php-wordpress:^3.0
-```
+    composer require rollbar/rollbar-php-wordpress:^3.0
 
 = Through WPackagist =
 
@@ -85,9 +83,7 @@ collisions if other plugins or your project use different versions of the same d
 To install the plugin from wpackagist.org run the following steps command in the root directory of your WordPress
 project:
 
-```
-composer require wpackagist-plugin/rollbar
-```
+    composer require wpackagist-plugin/rollbar
 
 = Configuration =
 
@@ -117,23 +113,21 @@ can be disabled by setting the `ROLLBAR_DISABLE_ADMIN` constant to `true` in you
 The plugin can also be configured programmatically. This is useful if you want to configure the plugin in a more
 advanced way or if you want to disable the admin settings page.
 
-```
-// wp-config.php
+    // wp-config.php
 
-// Configure the plugin.
-define( 'ROLLBAR_SETTINGS', [
-    'php_logging_enabled' => true,
-    'server_side_access_token' => '<your token>',
-    'js_logging_enabled' => true,
-    'client_side_access_token' => '<your client token>',
-    'environment' => 'development',
-    'included_errno' => E_ERROR,
-    'enable_person_reporting' => true,
-] );
+    // Configure the plugin.
+    define( 'ROLLBAR_SETTINGS', [
+        'php_logging_enabled' => true,
+        'server_side_access_token' => '<your token>',
+        'js_logging_enabled' => true,
+        'client_side_access_token' => '<your client token>',
+        'environment' => 'development',
+        'included_errno' => E_ERROR,
+        'enable_person_reporting' => true,
+    ] );
 
-// Optional: disable the admin settings page so the plugin is configured only programmatically.
-define( 'ROLLBAR_DISABLE_ADMIN', true );
-```
+    // Optional: disable the admin settings page so the plugin is configured only programmatically.
+    define( 'ROLLBAR_DISABLE_ADMIN', true );
 
 == Frequently Asked Questions ==
 
@@ -149,6 +143,10 @@ using composer.
 1. Settings page.
 
 == Changelog ==
+
+= Version 3.3.1 (Oct 9th 2026) =
+* Updated Rollbar JS to v4.0.0.
+* Updated other dependencies.
 
 = Version 3.3.0 (Sep 18th 2026) =
 * Added support for WordPress 7.1.
