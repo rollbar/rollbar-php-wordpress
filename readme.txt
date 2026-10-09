@@ -144,6 +144,10 @@ using composer.
 
 == Changelog ==
 
+= Version 3.3.1 (Oct 9th 2026) =
+* Updated Rollbar JS to v4.0.0.
+* Updated other dependencies.
+
 = Version 3.3.0 (Sep 18th 2026) =
 * Added support for WordPress 7.1.
 * Removed support for WordPress 6.6.
