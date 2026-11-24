@@ -27,6 +27,12 @@ final class Plugin extends AbstractSingleton
     public const VERSION = '3.3.1';
 
     /**
+     * The value of E_STRICT. PHP 8.4 deprecated the constant itself, so reading it raises an E_DEPRECATED notice on
+     * every request. PHP has not raised E_STRICT errors since 8.0, but saved settings may still hold this value.
+     */
+    public const E_STRICT = 2048;
+
+    /**
      * Configuration array for Rollbar.
      *
      * @var array
@@ -230,7 +236,7 @@ final class Plugin extends AbstractSingleton
             E_USER_ERROR,
             E_USER_WARNING,
             E_USER_NOTICE,
-            E_STRICT,
+            self::E_STRICT,
             E_RECOVERABLE_ERROR,
             E_DEPRECATED,
             E_USER_DEPRECATED,

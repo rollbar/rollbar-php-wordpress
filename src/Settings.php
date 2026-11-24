@@ -127,7 +127,7 @@ final class Settings extends AbstractSingleton
                     E_USER_ERROR => 'User-generated error messages (E_USER_ERROR) and above',
                     E_USER_WARNING => 'User-generated warning messages (E_USER_WARNING) and above',
                     E_USER_NOTICE => 'User-generated notice messages (E_USER_NOTICE) and above',
-                    E_STRICT => 'Suggest code changes to ensure forward compatibility (E_STRICT) and above',
+                    Plugin::E_STRICT => 'Suggest code changes to ensure forward compatibility (E_STRICT) and above',
                     E_DEPRECATED => 'Warnings about code that won\'t work in future versions (E_DEPRECATED) and above',
                     E_ALL => 'Absolutely everything (E_ALL)',
                 ],
