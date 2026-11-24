@@ -35,5 +35,10 @@
     },
     "devDependencies": {
         "rollbar": "^4.0.0"
+    },
+    "overrides": {
+        "express": "^4.22.3",
+        "isomorphic-git": "^1.38.6",
+        "rimraf": "^6.1.4"
     }
 }
